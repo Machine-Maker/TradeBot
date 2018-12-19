@@ -1,0 +1,18 @@
+{
+  "name": "tradebot",
+  "version": "0.0.1",
+  "description": "A trading bot for the WA Trading discord",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Machine Maker",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "moment": "^2.23.0"
+  },
+  "nodemonConfig": {
+    "ignore": ["settings.json", "items.json"]
+  }
+}
