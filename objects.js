@@ -1,7 +1,10 @@
 class AddingItem {
-  constructor(_id) {
+  constructor(_id, bot) {
     this.id = _id
-    this.prompts = ["Enter an item name", "Enter an image url", "Enter an item description"]
+    this.prompts = ["Enter an item name",
+                    "Enter an image url",
+                    "Enter an item description",
+                    `Choose a category: ${Object.keys(bot.config.categories.value).join(', ')}`]
     this.values = []
   }
 
@@ -19,6 +22,17 @@ class AddingItem {
         return
       }
     }
+  }
+
+  itemObj() {
+    return [
+      this.values[0],
+      {
+        "description": this.values[2],
+        "image_url": this.values[1],
+        "category": this.values[3]
+      }
+    ];
   }
 }
 

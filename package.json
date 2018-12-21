@@ -9,10 +9,15 @@
   "author": "Machine Maker",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^2.4.1",
     "discord.js": "^11.4.2",
+    "enmap": "^4.5.0",
     "moment": "^2.23.0"
   },
   "nodemonConfig": {
-    "ignore": ["settings.json", "items.json"]
+    "ignore": [
+      "settings.json",
+      "items.json"
+    ]
   }
 }
