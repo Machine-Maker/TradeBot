@@ -17,7 +17,13 @@
   "nodemonConfig": {
     "ignore": [
       "settings.json",
-      "items.json"
-    ]
+      "items.json",
+      "store-trades.json",
+      "public-trades.json"
+    ],
+    "events": {
+      "restart": "osascript -e 'display notification \"App restarted\" with title \"TradeBot\"'",
+      "crash": "osascript -e 'display notification \"App crashed\" with title \"TradeBot\" sound name \"Funk\"'"
+    }
   }
 }

@@ -1,3 +1,3 @@
-module.exports = (client, err) => {
-  console.error(err.message)
+module.exports = (bot, err) => {
+  bot.logger.error(err.message)
 }

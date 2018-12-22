@@ -1,4 +1,5 @@
 module.exports = (bot) => {
-  console.log(`Logged in as ${bot.user.username}\nID: ${bot.user.id}\n${bot.time(-8)}`)
-  console.log('--------------------')
+  let onReady = `Logged in as ${bot.user.username}    ID: ${bot.user.id}`
+  bot.logger.log(onReady)
+  bot.logger.log('-'.repeat(onReady.length))
 }

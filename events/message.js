@@ -1,8 +1,4 @@
-const fs = require('fs')
-
-let inUse = [];
-
-module.exports = (bot, msg) => {
+module.exports = async (bot, msg) => {
   if (msg.author.bot) return;
   const args = msg.content.slice(bot.config.prefix.value.length).trim().split(/\s+/g)
   const cmd_name = args.shift().toLowerCase()
@@ -10,41 +6,65 @@ module.exports = (bot, msg) => {
     const cmd = bot.cmds.get(cmd_name)
     if (!cmd) return;
     cmd.run(bot, msg, args)
+    return
   }
 
-  // dm commands
-  let obj;
-  inUse.forEach(o => {
-    if (o.id === msg.channel.id) {
-      obj = o
-      return
-    }
-  })
-  if (!obj && msg.content.startsWith(bot.config.prefix.value + "additem")) {
-    obj = new bot.AddingItem(msg.channel.id, bot)
-    inUse.push(obj)
-    msg.channel.send(obj.next)
-  }
-  else if (obj) {
-    if (msg.content.toLowerCase() === bot.config.prefix.value + "cancel") {
-      inUse = inUse.filter(o => o.id !== msg.channel.id)
-      msg.channel.send("Cancelled")
-      return
-    }
-    if (obj.next.startsWith("Choose") && !Object.keys(bot.config.categories.value).includes(msg.content)) {
-      msg.channel.send(obj.next)
-      return
-    }
-    obj.next = msg.content
-    let next_msg = obj.next
-    msg.channel.send(next_msg)
-    if (next_msg === "Finished") {
-      bot.items[obj.itemObj()[0]] = obj.itemObj()[1]
-      fs.writeFile('./configs/items.json', JSON.stringify(bot.items, null, 2), err => {
-        if (err) return console.log(err.message);
-        console.log("Updated items.json!")
-      })
-      inUse = inUse.filter(o => o.id !== msg.channel.id)
+  let obj = bot.inUse.find(o => o.id === msg.channel.id)
+  if (!obj) {
+    switch(cmd_name) {
+      case "additem":
+        obj = new bot.addingitem(msg.channel.id)
+        break;
+      case "addtrade":
+        obj = new bot.addingtrade(msg.channel.id, msg.author.id, true)
+        break;
+      default:
+        return
     }
   }
+  else return;
+
+  while (obj.nextPrompt() !== "done") {
+    let prompt = obj.nextPrompt()
+    let reply = await bot.awaitReply(msg, `= ${prompt.prompt} =`, 120000, "asciidoc")
+    if (!reply) return obj.remove(msg, true)
+    else if (reply.toLowerCase() === "cancel") return obj.remove(msg, true);
+    switch (prompt.responseType) {
+      case "string":
+        prompt.value = reply
+        break;
+      case "url":
+        if (!/^.*\.(jpg|JPG|gif|GIF|png|PNG|svg|SVG)$/.exec(reply))
+          bot.msg(msg.channel, `{reply} is not a link to an image!`, "red")
+        else {
+          prompt.value = reply
+        }
+        break;
+      case "number":
+        if (isNaN(reply))
+          bot.msg(msg.channel, `${reply} is not a number!`, "red")
+        else {
+          prompt.value = parseInt(reply)
+        }
+        break;
+      case "choice":
+        if (!prompt.options.includes(reply)) {
+          bot.msg(msg.channel, `${reply} is not an option!`, "red")
+        }
+        else {
+          prompt.value = reply
+        }
+    }
+  }
+  // let newItem = obj.getObject()
+  // let embed = new bot.Embed()
+  //   .setTitle(newItem[0])
+  //   .setImage(newItem[1].image_url)
+  //   .setDescription(newItem[1].description)
+  //   .addField("Category", newItem[1].category)
+  //   .setTimestamp()
+  // bot.msg(msg.channel, "Type confirm within 60 seconds to add this item.", "yellow")
+  // let confirm = await bot.awaitReply(msg, {embed}, 60000)
+  // if (!confirm) return obj.remove(msg, true);
+  obj.add(msg)
 }

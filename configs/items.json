@@ -1,12 +1,7 @@
 {
   "Glider": {
-    "description": "Let's you fly",
-    "image_url": "test.com",
-    "category": "otherCat"
-  },
-  "Stairs": {
-    "description": "Lets you walk up",
-    "image_url": "stairs.png",
-    "category": "Structural"
+    "description": "A personal glider you can deploy by pressing Spacebar while in the air.",
+    "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/5/5e/Item_glider.png",
+    "category": "Personal"
   }
 }
