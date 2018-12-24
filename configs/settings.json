@@ -4,7 +4,7 @@
       "value": "!",
       "type": "string"
     },
-    "admin-role": {
+    "staff-role": {
       "value": "525438421984870410",
       "type": "role"
     },
@@ -12,15 +12,21 @@
       "value": "525427055836266521",
       "type": "channel"
     },
+    "trade-expiration": {
+      "value": 7,
+      "type": "number"
+    },
     "categories": {
       "value": {
         "Structural": "525206178146418689",
         "Decoration": "525439925164834816",
-        "Personal": "525539322452246536"
+        "Personal": "525539322452246536",
+        "Cooking": "525865434365558784"
       },
       "type": "object"
     }
   },
   "token": "NDc5OTA0OTQzOTEwNjgyNjI0.DvuxMg.RrXqFJSE7SCM7oepnb6guNtNMH8",
-  "ownerID": "338670732403933194"
+  "ownerID": "338670732403933194",
+  "guildID": "462856789336260608"
 }

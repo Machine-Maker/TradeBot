@@ -5,19 +5,19 @@ const Enmap = require('enmap')
 const settings = require('./configs/settings.json')
 
 let items = require('./configs/items.json')
-let storeTrades = require('./configs/store-trades.json')
 
 const bot = new Discord.Client({disableEveryone: true})
 
 require('./modules/functions.js')(bot)
-require('./modules/objects.js')(bot)
+require('./modules/dmCommands.js')(bot)
+require('./modules/tradeTypes.js')(bot)
+require('./modules/activeTrades.js')(bot)
 bot.logger = require('./modules/logger.js')
 
 bot.settings = settings
 bot.config = settings.config
 
 bot.items = items
-bot.storeTrades = storeTrades
 
 bot.Embed = Discord.RichEmbed
 
@@ -30,7 +30,7 @@ bot.tradeEmojis = {
 bot.inUse = []
 
 fs.readdir('./events/', (err, files) => {
-  if (err) return bot.logger.error(err.message);
+  if (err) return bot.logger.error(err);
   files.forEach(file => {
     if (!file.endsWith('.js')) return;
     const event = require(`./events/${file}`)
@@ -41,14 +41,18 @@ fs.readdir('./events/', (err, files) => {
 })
 
 bot.cmds = new Enmap()
+bot.aliases = new Enmap()
 
 fs.readdir('./cmds/', (err, files) => {
-  if (err) bot.logger.error(err.message);
+  if (err) bot.logger.error(err);
   files.forEach(file => {
     if (!file.endsWith('.js')) return;
     let props = require(`./cmds/${file}`)
-    let cmdName = file.split('.')[0]
-    bot.cmds.set(cmdName, props)
+    bot.cmds.set(props.help.name, props)
+    props.conf.aliases.forEach(alias => {
+      bot.aliases.set(alias, props.help.name)
+    })
+    return false
   })
 })
 

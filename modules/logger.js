@@ -9,6 +9,8 @@ module.exports.log = (content, type = "log") => {
     case "warn":
       return console.log(`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content} `)
     case "error":
+      if (typeof content === "object")
+        return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content.toString()} `)
       return console.log(`${timestamp} ${chalk.bgRed(type.toUpperCase())} ${content} `)
     case "debug":
       return console.log(`${timestamp} ${chalk.green(type.toUpperCase())} ${content} `)

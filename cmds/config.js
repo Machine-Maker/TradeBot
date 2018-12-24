@@ -34,7 +34,7 @@ exports.run = (bot, msg, args) => {
           msg.channel.send(`"${args[1]}" is not a channel or channel id!`, {code: "bash"})
         }
         else {
-          bot.config[args[0]].value = (msg.mentions.channels.firstKey()) ? msg.mentions.channels.firstKey() : msg.client.channels.get(args[1]).id
+          bot.config[args[0]].value = (msg.mentions.channels.firstKey()) || msg.client.channels.get(args[1]).id
           changed = true
           msg.channel.send(`${args[0]} was changed to "${args[1]}"`, {code: "bash"})
         }
@@ -78,6 +78,13 @@ exports.run = (bot, msg, args) => {
   if (changed) {
     bot.updateFile('settings.json', bot.settings)
   }
+}
+
+exports.conf = {
+  enabled: true,
+  guildOnly: true,
+  aliases: ["settings"],
+  permLevel: ["Admin", "Owner"]
 }
 
 exports.help = {

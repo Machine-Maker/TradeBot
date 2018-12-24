@@ -1,4 +1,6 @@
 const fs = require('fs')
+const moment = require('moment')
+const axios = require('axios')
 
 module.exports = (bot) => {
   bot.clean = async (bot, text) => {
@@ -16,7 +18,11 @@ module.exports = (bot) => {
   };
 
   bot.time = offset => {
-    return require('moment')().utcOffset(offset).format('MM/D/YY HH:mm:ss')
+    return moment().utcOffset(offset).format('MM/DD/YY HH:mm:ss')
+  }
+
+  bot.date = offset => {
+    return moment().utcOffset(offset).format("MM/DD/YY")
   }
 
   bot.awaitReply = async (msg, question, limit = 60000, code = "") => {
@@ -31,11 +37,57 @@ module.exports = (bot) => {
     }
   }
 
+  bot.asyncForEach = async (array, callback) => {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+
   bot.updateFile = (file, data) => {
     fs.writeFile(`./configs/${file}`, JSON.stringify(data, null, 2), err => {
-      if (err) return bot.logger.error(err.message);
+      if (err) return bot.logger.error(err);
       bot.logger.log(`Successfully updated ${file}!`)
     })
+  }
+
+  bot.typeCheck = async (value, type, choices = []) => {
+    switch (type) {
+      case "string":
+        return true
+        break
+      case "number":
+        if (isNaN(value)) return false;
+        return true
+        break
+      case "image link":
+        try {
+          let res = await axios.get(value)
+          if (res.headers["content-type"].search("image") < 0) throw new TypeError("Invalid URL")
+          return true
+        } catch (err) {
+          return false
+        }
+        break
+      case "choice":
+        if (!choices.includes(value)) return false;
+        return true
+        break
+      default:
+        bot.logger.error(`${type} is not a valid option!`)
+        return false
+    }
+  }
+
+  bot.getPermLevel = member => {
+    if (!bot.tradeGuild.members.has(member.id))
+      return bot.msg(msg, "Invalid member!")
+    if (member.id === bot.settings.ownerID)
+      return "Owner"
+    if (member.permissions.has("ADMINISTRATOR"))
+      return "Admin"
+    else if (member.roles.has(bot.config["staff-role"].value))
+      return "Staff"
+    else return "All";
   }
 
   bot.msg = (channel, content, color = "none", options = {}) => {
@@ -67,4 +119,5 @@ module.exports = (bot) => {
       default: throw new TypeError(`${color} is not a valid option!`)
     }
   }
+
 }

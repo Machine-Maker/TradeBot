@@ -25,6 +25,13 @@ exports.run = (bot, msg, args) => {
   }
 }
 
+exports.conf = {
+  enabled: true,
+  guildOnly: true,
+  aliases: [],
+  permLevel: ["All", "Staff", "Admin", "Owner"]
+}
+
 exports.help = {
   name: "help",
   category: "System",

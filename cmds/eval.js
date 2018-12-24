@@ -1,13 +1,22 @@
 exports.run = async (bot, msg, args) => {
-  if (msg.author.id !== require('../configs/settings.json').ownerID) return;
+  if (msg.author.id !== bot.settings.ownerID) return;
   const code = args.join(' ')
   try {
     const evaled = eval(code)
     const clean = await bot.clean(bot, evaled);
-    msg.channel.send(`${clean}`, {code: "js"})
+    await msg.channel.send(`${clean}`, {code: "js"})
   } catch (err) {
-    msg.channel.send(`\`ERROR\` \`\`\`xl\n${await bot.clean(bot, err)}\n\`\`\``)
+    msg.channel.send(`\`ERROR\` \`\`\`xl\n${await bot.clean(bot, err)}\n\`\`\``).catch(err => {
+      bot.logger.error("Cant send the error message")
+    })
   }
+}
+
+exports.conf = {
+  enabled: true,
+  guildOnly: false,
+  aliases: [],
+  permLevel: ["Owner"]
 }
 
 exports.help = {
