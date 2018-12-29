@@ -1,10 +1,13 @@
+const moment = require('moment')
+
 module.exports = (bot) => {
   class Prompt {
-    constructor(_prompt, _responseType, _options = []) {
+    constructor(_prompt, _responseType, _options = [], _previous = "") {
       this.prompt = _prompt
       this.responseType = _responseType
       this.value = ""
       this.options = _options
+      this.previous = _previous
     }
   }
 
@@ -20,7 +23,7 @@ module.exports = (bot) => {
         const prompt = this.nextPrompt()
         const reply = await bot.awaitReply(msg, prompt.prompt, 120000, "yaml")
         if (!reply || reply.toLowerCase() === "cancel") return this.remove(msg, true);
-        if (!await bot.typeCheck(reply, prompt.responseType, prompt.options))
+        if (!await bot.typeCheck(reply, prompt.responseType, prompt.options, prompt.previous))
           bot.msg(msg.channel, `${reply} is not a valid ${prompt.responseType}`, "red")
         else
           prompt.value = reply
@@ -47,20 +50,31 @@ module.exports = (bot) => {
       prompts.push(new Prompt("Enter an item name", "string"))
       prompts.push(new Prompt("Enter an image url", "image link"))
       prompts.push(new Prompt("Enter an item description", "string"))
-      prompts.push(new Prompt(`Choose an item category: ${Object.keys(bot.config.categories.value).join(", ")}`, "choice", Object.keys(bot.config.categories.value)))
+      prompts.push(new Prompt(`Choose an item category: ${Object.keys(bot.config.categories).join(", ")}`, "choice", Object.keys(bot.config.categories)))
       super(_channel_id, prompts)
     }
 
     complete(msg) {
-      bot.items[this.prompts[0].value] = {
-        description: this.prompts[2].value,
-        image_url: this.prompts[1].value,
-        category: this.prompts[3].value
-      }
-      bot.updateFile("items.json", bot.items)
-      bot.msg(msg.channel, `Added ${this.prompts[0].value}!`, "green")
-      bot.logger.log(`Added new item: ${this.prompts[0].value}`)
-      this.remove(msg)
+      const embed = new bot.Embed()
+        .setTitle(this.prompts[0].value)
+        .setDescription(`\`\`\`fix\n${this.prompts[2].value}\`\`\``)
+        .setThumbnail(this.prompts[1].value)
+        .addField("Category", this.prompts[3].value)
+        .setColor("#004ac1")
+      msg.channel.send(embed).then(m => {
+        bot.confirmCmd(msg, 30000).then(res => {
+          if (!res) return;
+          bot.items[this.prompts[0].value] = {
+            image_url: this.prompts[1].value,
+            description: this.prompts[2].value,
+            category: this.prompts[3].value
+          }
+          bot.updateFile("items.json", bot.items)
+          bot.msg(msg.channel, `Added ${this.prompts[0].value}!`, "green")
+          bot.logger.newItem("Added a new item", this.prompts[0].value)
+          this.remove(msg)
+        }).catch(err => bot.logger.error(err))
+      }).catch(err => bot.logger.error(err))
     }
   }
 
@@ -87,14 +101,14 @@ module.exports = (bot) => {
         bot.Trade.save(trade.data)
         bot.msg(msg.channel, `Added a new trade for ${trade.item_name}`, "green")
         this.remove(msg)
-        bot.logger.log(`Added a new trade for ${trade.item_name} by ${trade.creator.user.username}`)
+        bot.logger.newListing("Added a new trade listing", trade)
         await m.react(bot.tradeEmojis.edit)
         await m.react(bot.tradeEmojis.accept)
       } catch (err) {
         bot.logger.error("Error adding new trade!")
         bot.logger.error(err)
         bot.msg(msg.channel, "Something went wrong!", "red")
-        this.message.delete()
+        m.delete()
         this.remove(msg)
       }
     }
@@ -118,11 +132,42 @@ module.exports = (bot) => {
       let trade = new bot.BasicTrade({
         user_id: this.userID,
         item_name: this.prompts[0].value,
-        item_cost: this.prompts[1].value,
-        item_count: this.prompts[2].value,
-        location: this.prompts[3].value
+        item_cost: this.prompts[2].value,
+        item_count: this.prompts[3].value,
+        location: this.prompts[1].value
       }, this.isStoreTrade ? "store" : "public")
-      this.add(msg, trade)
+      msg.channel.send(trade.embed).then(m => {
+        bot.confirmCmd(msg, 30000).then(res => {
+          if (!res) return;
+          this.add(msg, trade)
+        }).catch(err => bot.logger.error(err))
+      }).catch(err => bot.logger.error(err))
+    }
+  }
+
+  const properties = {
+    "Cost": "item_cost",
+    "Count": "item_count",
+    "Location": "location"
+  }
+
+  bot.EditTrade = class EditTrade extends DMCommand {
+    constructor(_channel_id, _trade) {
+      let prompts = []
+      let props = ["Cost", "Count", "Location"]
+      prompts.push(new Prompt(`Which property would you like to change? [${props.join(", ")}]`, "choice", props))
+      const types = {"Cost": "string", "Count": "number", "Location": "string"}
+      prompts.push(new Prompt("What is the new value for the selected property?", "previous", types, prompts[0]))
+      super(_channel_id, prompts)
+      this.trade = _trade
+    }
+
+    complete(msg) {
+      this.trade[properties[this.prompts[0].value]] = this.prompts[1].value
+      this.trade.buildEmbed()
+      this.trade.message.edit({embed: this.trade.embed})
+      bot.msg(msg.channel, "Successfully updated trade!", "green")
+      this.remove(msg)
     }
   }
 }

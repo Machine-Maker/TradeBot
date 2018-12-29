@@ -6,6 +6,11 @@ module.exports = (bot) => {
     constructor(_obj, type = "active") {
       Object.assign(this, _obj)
       this.type = type
+      this.accepted = false
+      this.complete = {
+        trader: false,
+        tradee: false
+      }
     }
 
     async init() {
@@ -18,7 +23,6 @@ module.exports = (bot) => {
         bot.logger.error(`Error finding channel, trade, or tradee. Assuming the person left, channel was removed, or trade was removed!`)
         return false
       }
-
     }
 
     obj() {
@@ -27,18 +31,31 @@ module.exports = (bot) => {
         trade_id: this.trade.message_id,
         tradee_id: this.tradee.id,
         tradeType: this.constructor.name,
+        accepted: this.accepted,
+        expires: this.expires,
+        complete: this.complete,
         type: "active"
       }
     }
 
-    handleInput(msg, cmd, args) {
-      console.log("handling input!")
+    async handleInput(msg, member, cmd_name, args) {
+      const cmd = bot.tradeCmds.get(cmd_name)
+      if (!(cmd && cmd.conf.enabled)) return;
+      let perm = "All"
+      if (this.trade.type === "public" && member.id === this.trade.creator.id)
+        perm = "Trader"
+      else if (this.trade.type === "store" && member.roles.has(bot.config["staff-role"]))
+        perm = "Trader"
+      else if (this.tradee.id === member.id)
+        perm = "Tradee"
+      if (!(cmd.conf.permLevel.includes(perm))) return;
+      cmd.run(bot, msg, args, this, perm, member)
     }
 
     async start(tradee) {
       this.tradee = tradee
       const perms = [] // permission creation
-      const ids = [bot.config["staff-role"].value, tradee.id, this.trade.creator.id]
+      const ids = [bot.config["staff-role"], tradee.id, this.trade.creator.id]
       ids.forEach(id => {
         perms.push({allowed: "VIEW_CHANNEL", id: id})
       })
@@ -47,30 +64,35 @@ module.exports = (bot) => {
         this.channel = await bot.tradeGuild.createChannel(this.trade.item_name, "text", perms)
         this.channel_id = this.channel.id
         await this.channel.setParent(bot.tradeCategory)
-        await this.channel.setTopic(`[${this.trade.creator ? (this.trade.creator.nickname || this.trade.creator.user.username) : "N/A"}] trading with [${tradee.nickname || tradee.user.username}] Date initiated: ${bot.date(-8)}`)
+        const traderName = this.trade.type === "store" ? "Store" : this.trade.creator.nickname || this.trade.creator.user.username
+        await this.channel.setTopic(`[${traderName}] trading with [${tradee.nickname || tradee.user.username}] Date initiated: ${bot.date(-8)}`)
         bot.activeTrades.push(this)
-        bot.ActiveTrade.save()
-
         const activeEmbed = new bot.Embed(Object.assign({}, this.trade.embed))
         activeEmbed.fields = activeEmbed.fields.filter(f => f.name !== "In stock")
-        const expireData = moment().utcOffset(-8).add(bot.config["trade-expiration"].value, 'days')
+        // const expireData = moment().utcOffset(-8).add(bot.config["trade-expiration"], 'days')
+        const expireData = moment().utcOffset(-8).add(10, 'seconds')
+        this.expires = expireData.format()
         activeEmbed.addField("Expires", expireData.format("MM/DD/YY"), true)
           .setTimestamp()
           .addField("\u200b", "```yaml\nYou can negotiate a price/meetup location here. Type !help for a list of commands you have access to here```")
+        bot.ActiveTrade.save()
 
-        await this.channel.send(`${this.trade.creator}, ${this.tradee} has requested to trade for`, {embed: activeEmbed})
-        bot.logger.log(`Started a trade between ${this.trade.creator.user.username} and ${tradee.user.username}`)
+        const trader = this.trade.type === "store" ? bot.tradeGuild.roles.get(bot.config["staff-role"]) : this.trade.creator
+        await this.channel.send(`${trader}, ${this.tradee} has requested to trade for`, {embed: activeEmbed})
+        bot.logger.newActive("Created a new active trade", this)
 
       } catch (err) {
         bot.logger.error("Error creating a active trade channel!")
         bot.logger.error(err)
+        if (this.channel)
+          this.channel.delete()
       }
     }
 
     del() {
       bot.activeTrades = bot.activeTrades.filter(t => t.channel_id !== this.channel_id)
       bot.ActiveTrade.save()
-      bot.logger.warn(`Deleted a active trade between ${this.trade.creator.nickname || this.trade.creator.user.username} and ${this.tradee.nickname || this.tradee.user.username}!`)
+      bot.logger.delActive("Deleted an active trade", this)
     }
 
     static save() {
@@ -80,7 +102,7 @@ module.exports = (bot) => {
       })
       fs.writeFile("./configs/activeTrades.json", JSON.stringify(data, null, 2), err => {
         if (err) return bot.logger.error(err);
-        bot.logger.log(`Updated activeTrades.json!`)
+        bot.logger.fileChange("activeTrades.json")
       })
     }
   }

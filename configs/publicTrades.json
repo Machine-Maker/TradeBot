@@ -1,12 +1,13 @@
 [
   {
     "user_id": "525924657778393108",
-    "item_name": "Head Torch",
-    "item_cost": "2k fuel",
-    "item_count": 2,
-    "location": "K2",
-    "message_id": "526280210325307392",
-    "tradeType": "BasicTrade",
-    "type": "public"
+    "item_name": "Glider",
+    "item_cost": "400 titanium",
+    "location": "A4",
+    "message_id": "528492766120902659",
+    "expires": "2019-01-12T00:41:22-08:00",
+    "type": "public",
+    "item_count": "2",
+    "tradeType": "BasicTrade"
   }
 ]

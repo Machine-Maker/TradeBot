@@ -12,10 +12,12 @@ require('./modules/functions.js')(bot)
 require('./modules/dmCommands.js')(bot)
 require('./modules/tradeTypes.js')(bot)
 require('./modules/activeTrades.js')(bot)
-bot.logger = require('./modules/logger.js')
+require('./modules/logger.js')(bot)
+// bot.logger = require('./modules/logger.js')
 
 bot.settings = settings
 bot.config = settings.config
+bot.typeChecks = settings["type-checks"]
 
 bot.items = items
 
@@ -44,7 +46,7 @@ bot.cmds = new Enmap()
 bot.aliases = new Enmap()
 
 fs.readdir('./cmds/', (err, files) => {
-  if (err) bot.logger.error(err);
+  if (err) return bot.logger.error(err);
   files.forEach(file => {
     if (!file.endsWith('.js')) return;
     let props = require(`./cmds/${file}`)
@@ -52,7 +54,16 @@ fs.readdir('./cmds/', (err, files) => {
     props.conf.aliases.forEach(alias => {
       bot.aliases.set(alias, props.help.name)
     })
-    return false
+  })
+})
+
+bot.tradeCmds = new Enmap()
+fs.readdir('./tradeCmds/', (err, files) => {
+  if (err) return bot.logger.error(err);
+  files.forEach(file => {
+    if (!file.endsWith('.js')) return;
+    let props = require(`./tradeCmds/${file}`)
+    bot.tradeCmds.set(props.help.name, props)
   })
 })
 

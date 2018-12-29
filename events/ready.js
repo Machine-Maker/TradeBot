@@ -1,4 +1,5 @@
 const fs = require('fs')
+const moment = require('moment')
 
 const files = {
   publicTrades: require("../configs/publicTrades.json"),
@@ -37,4 +38,27 @@ module.exports = async (bot) => {
     })
     bot.logger.log(`Loaded ${bot[fileKeys[i]].length} ${fileKeys[i].split("T")[0]} trades`)
   }
+
+  setInterval(() => {
+    bot.activeTrades.forEach(async trade => {
+      if (!trade.accepted && trade.expires && moment(trade.expires).isBefore(moment().utcOffset(-8), "day")) {
+        if (!trade.tradee.user.dmChannel)
+          await trade.tradee.createDM()
+        bot.msg(trade.tradee.user.dmChannel, `Your trade request for ${trade.trade.item_name} has expired!`, "red")
+        if (!trade.trade.creator.user.dmChannel)
+          await trade.trade.creator.createDM()
+        bot.msg(trade.trade.creator.user.dmChannel, `${trade.tradee.nickname || trade.tradee.user.username}'s trade for ${trade.trade.item_name} has expired!`, "red")
+        await trade.channel.delete()
+      }
+    })
+
+    bot.publicTrades.concat(bot.storeTrades).forEach(async trade => {
+      if (trade.expires && moment(trade.expires).isBefore(moment().utcOffset(-8), "day")) {
+        if (!trade.creator.user.dmChannel)
+          await trade.creator.createDM()
+        bot.msg(trade.creator.user.dmChannel, `Your listing for ${trade.item_name} has expired!`, "red")
+        await trade.message.delete()
+      }
+    })
+  },5000)
 }

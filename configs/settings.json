@@ -1,30 +1,31 @@
 {
   "config": {
-    "prefix": {
-      "value": "!",
-      "type": "string"
-    },
-    "staff-role": {
-      "value": "525438421984870410",
-      "type": "role"
-    },
-    "public-trade-channel": {
-      "value": "525427055836266521",
-      "type": "channel"
-    },
-    "trade-expiration": {
-      "value": 7,
-      "type": "number"
-    },
+    "prefix": "!",
+    "staff-role": "525438421984870410",
+    "public-trade-channel": "525427055836266521",
+    "trade-expiration": 7,
     "categories": {
-      "value": {
-        "Structural": "525206178146418689",
-        "Decoration": "525439925164834816",
-        "Personal": "525539322452246536",
-        "Cooking": "525865434365558784"
-      },
-      "type": "object"
-    }
+      "Structural": "525206178146418689",
+      "Decoration": "525439925164834816",
+      "Personal": "525539322452246536",
+      "Cooking": "525865434365558784"
+    },
+    "pub-trade-listing-expires": 14,
+    "pub-trade-active-expires": 7,
+    "store-trade-listing-expires": 0,
+    "store-trade-active-expires": 0,
+    "logging-channel": "528295034043498526"
+  },
+  "type-checks": {
+    "prefix": "string",
+    "staff-role": "role",
+    "public-trade-channel": "channel",
+    "categories": "object",
+    "pub-trade-listing-expires": "number",
+    "pub-trade-active-expires": "number",
+    "store-trade-listing-expires": "number",
+    "store-trade-active-expires": "number",
+    "logging-channel": "channel"
   },
   "token": "NDc5OTA0OTQzOTEwNjgyNjI0.DvuxMg.RrXqFJSE7SCM7oepnb6guNtNMH8",
   "ownerID": "338670732403933194",

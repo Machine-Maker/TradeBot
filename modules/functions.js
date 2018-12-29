@@ -37,6 +37,15 @@ module.exports = (bot) => {
     }
   }
 
+  bot.confirmCmd = async (msg, limit = 10000) => {
+    const reply = await bot.awaitReply(msg, `Confirm this request by typing \`\`confirm\`\` with in the next ${limit/1000} seconds!`, limit)
+    if (!reply || reply.toLowerCase() !== "confirm") {
+      await bot.msg(msg.channel, "You did not confirm this request. Aborted!", "red")
+      return false
+    }
+    return true
+  }
+
   bot.asyncForEach = async (array, callback) => {
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
@@ -46,11 +55,11 @@ module.exports = (bot) => {
   bot.updateFile = (file, data) => {
     fs.writeFile(`./configs/${file}`, JSON.stringify(data, null, 2), err => {
       if (err) return bot.logger.error(err);
-      bot.logger.log(`Successfully updated ${file}!`)
+      bot.logger.fileChange(file)
     })
   }
 
-  bot.typeCheck = async (value, type, choices = []) => {
+  bot.typeCheck = async (value, type, choices = [], previous = "") => {
     switch (type) {
       case "string":
         return true
@@ -72,6 +81,10 @@ module.exports = (bot) => {
         if (!choices.includes(value)) return false;
         return true
         break
+      case "previous":
+        if (!await bot.typeCheck(value, choices[previous.value])) return false;
+        return true
+        break
       default:
         bot.logger.error(`${type} is not a valid option!`)
         return false
@@ -85,7 +98,7 @@ module.exports = (bot) => {
       return "Owner"
     if (member.permissions.has("ADMINISTRATOR"))
       return "Admin"
-    else if (member.roles.has(bot.config["staff-role"].value))
+    else if (member.roles.has(bot.config["staff-role"]))
       return "Staff"
     else return "All";
   }

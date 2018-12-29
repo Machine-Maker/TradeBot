@@ -19,14 +19,14 @@
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/a/a6/Cannon_ball_Shell.png?version=090d8d03781906867b8513abf2b5c308",
     "category": "Personal"
   },
-  "Figurehead of the Hawk": {
-    "description": "These figureheads once adorned the war vessel of Astor's legendary band of soldiers, the Karem hawks.",
-    "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/a/ac/FigureheadHawk.png?version=eb75e8d1f9f57ef62d60dea631d8133b",
-    "category": "Decoration"
-  },
   "Stove": {
     "description": "A stove for preparing food and drink on a ship.",
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/1/16/Stove.png?version=3a109cbb3e9fa0b91d4b3dd361580e43",
     "category": "Cooking"
+  },
+  "Lamp": {
+    "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/3/37/Lamp.png?version=1e3379c29499a472d1589f17d28dd6ba",
+    "description": "A lamp for the ship.",
+    "category": "Decoration"
   }
 }
