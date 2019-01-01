@@ -250,7 +250,6 @@ module.exports = (bot) => {
   bot.EditTrade = class EditTrade extends DMCommand {
     constructor(_channel_id, _trade) {
       let prompts = []
-      console.log(_trade.tradeType)
       let props = Object.keys(bot.objProps).filter(o => bot.objProps[o].validFor.includes(_trade.tradeType))
       prompts.push(new Prompt(`Which property would you like to change? [${props.join(", ")}]`, "choice", props))
       prompts.push(new Prompt("What is the new value for the selected property?", "previous", bot.objProps, prompts[0]))

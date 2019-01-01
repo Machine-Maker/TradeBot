@@ -29,7 +29,7 @@ exports.run = async (bot, msg) => {
       obj = new bot.NewBasicTrade(msg.channel.id, msg.author.id, !isPublicTrade)
       break
     default:
-      bot.msg(msg.channel, "Something went wrong! Aborted", "red")
+      return bot.msg(msg.channel, "Something went wrong! Aborted", "red")
   }
 
   obj.start(msg)
