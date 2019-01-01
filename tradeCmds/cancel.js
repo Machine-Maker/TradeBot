@@ -8,9 +8,7 @@ exports.run = async (bot, msg, args, trade, perm) => {
   }
   bot.msg(msg.channel, "This trade has been deleted! The channel will be deleted in 10 seconds!", "yellow")
   setTimeout((msg) => {
-    msg.channel.delete().then(() => {
-      bot.logger.delActive("Deleted an active trade", trade)
-    }).catch(err => {
+    msg.channel.delete().catch(err => {
       bot.logger.error("Error deleting active trade channel!")
       bot.logger.error(err)
     })
