@@ -7,7 +7,7 @@ module.exports = async (bot, reaction, user) => {
   switch(reaction.emoji.name) {
     case bot.tradeEmojis.edit: {
       if (bot.inUse.find(o => o.id === user.dmChannel.id)) return reaction.remove(user)
-      if ((trade.type === "public" && !bot.publicTrades.find(t => t.creator.id === user.id)) || trade.type === "store" && !bot.tradeGuild.roles.get(bot.config["staff-role"]).members.has(user.id)) {
+      if ((trade.type === "public" && trade.creator.id !== user.id) || trade.type === "store" && !bot.tradeGuild.roles.get(bot.config["staff-role"]).members.has(user.id)) {
         reaction.remove(user)
         return bot.msg(user.dmChannel, "Only the creator(s) of this trade may edit it!", "red")
       }

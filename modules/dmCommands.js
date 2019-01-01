@@ -108,6 +108,7 @@ module.exports = (bot) => {
       this.isStoreTrade = _isStoreTrade
       this.userID = _user_id
       this.type = _type
+      this.tradeType = this.constructor.name
     }
 
     complete(msg) {
