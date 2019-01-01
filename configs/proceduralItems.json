@@ -1,0 +1,22 @@
+{
+  "Cannon": {
+    "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/f/f7/Ship_cannon.png?version=4a612ba0780fcf648f3cb1b8338255b3",
+    "description": "Deliver withering barrages against ships or target enemies on land.",
+    "category": "Cannons"
+  },
+  "Engine": {
+    "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/d/dc/Ship_engine.png?version=915b17a125389530933012155ec3b84e",
+    "description": "Provides propulsion if attached to a ship, which has a fuel tank.",
+    "category": "Engines"
+  },
+  "Wing": {
+    "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/7/73/Ship_wing.png?version=29ab89be430c336f2dd45130789399f5",
+    "description": "Improves turning if attached vertically and pitching if attached horizontally.",
+    "category": "Wings"
+  },
+  "Swivel": {
+    "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/f/f3/Ship_swivel.png?version=bd628ff1ed33d7e21b30ad62755eb5be",
+    "description": "Close range ship turrets capable of shredding soft targets.",
+    "category": "Swivels"
+  }
+}

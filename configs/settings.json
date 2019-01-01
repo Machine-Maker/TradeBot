@@ -1,0 +1,41 @@
+{
+  "config": {
+    "prefix": "!",
+    "staff-role": "434098995179028480",
+    "public-trade-channel": "529476047553691700",
+    "trade-expiration": 7,
+    "categories": {
+	"Storage": "529476634554662952",
+  	"Stuctural": "529476679039713280",
+  	"Decoration": "529476707711713281",
+  	"Gear": "529476740788256779",
+  	"Engines": "529476767828934666",
+  	"Wings": "529476792843501569",
+  	"Cannons": "529476828864315392",
+  	"Swivels": "529476890684031014",
+  	"Miscellaneous": "529477845748285460"
+    },
+    "pub-trade-listing-expires": 14,
+    "pub-trade-active-expires": 7,
+    "store-trade-listing-expires": 0,
+    "store-trade-active-expires": 0,
+    "logging-channel": "529474548911964172",
+    "debug-mode": true
+  },
+  "type-checks": {
+    "prefix": "string",
+    "staff-role": "role",
+    "public-trade-channel": "channel",
+    "categories": "object",
+    "pub-trade-listing-expires": "number",
+    "pub-trade-active-expires": "number",
+    "store-trade-listing-expires": "number",
+    "store-trade-active-expires": "number",
+    "logging-channel": "channel",
+    "debug-mode": "boolean"
+  },
+  "token": "NTI5NDcwMzI0NjE0NjI3MzYz.DwxVmA.TH0cM9yuGxvMnDBSJ4567IU7Kp4",
+  "ownerID": "338670732403933194",
+  "guildID": "379343288127455232"
+}
+

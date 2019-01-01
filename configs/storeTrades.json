@@ -1,0 +1,32 @@
+[
+  {
+    "user_id": "338670732403933194",
+    "item_name": "Glider",
+    "item_count": 2,
+    "item_cost": "4k fuel",
+    "location": "Store",
+    "message_id": "529483402982981664",
+    "expires": null,
+    "type": "store",
+    "tradeType": "BasicTrade"
+  },
+  {
+    "user_id": "357780249934823424",
+    "item_name": "Engine",
+    "item_count": 1,
+    "item_cost": "Ok I fixed it",
+    "location": "Test",
+    "message_id": "529559335060373504",
+    "expires": null,
+    "type": "store",
+    "procedural_name": "Test",
+    "stats": {
+      "Resilience": "70",
+      "Power": "70",
+      "Overheat Limit": "70",
+      "Spin Up": "70",
+      "Fuel Efficiency": "70"
+    },
+    "tradeType": "ProceduralTrade"
+  }
+]
