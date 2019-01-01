@@ -25,7 +25,7 @@ module.exports = (bot) => {
     return moment().utcOffset(offset).format("MM/DD/YY")
   }
 
-  bot.choose = async (channel, user, options) => {
+  bot.choose = async (channel, user, options, prompt = null) => {
     let emojis = []
     let letters = []
     let choices = ""
@@ -37,19 +37,30 @@ module.exports = (bot) => {
     const embed = new bot.Embed()
       .setTitle("React with or type your corresponding choice")
       .setDescription(choices)
-    const m = await channel.send(embed)
+    let m = null
+    if (prompt)
+      m = await channel.send(prompt, {embed: embed, code: "yaml"})
+    else
+      m = await channel.send(embed)
     const filter = (reaction, u) => u.id === user.id && emojis.includes(reaction.emoji.name)
     const msgFilter = m => m.author.id === user.id && (letters.includes(m.content.toLowerCase()) || m.content.toLowerCase() === "cancel")
-    bot.asyncForEach(emojis, async e => {
-      await m.react(e)
-    })
     let responses = null
+    bot.asyncForEach(emojis, async e => {
+      if (!responses)
+        await m.react(e)
+    })
+    let aReactions = null
+    let aMessages = null
     while (!responses) {
-      responses = await Promise.race([m.awaitReactions(filter, {max: 1, time: 120000}), channel.awaitMessages(msgFilter, {max: 1, time: 120000})])
+      aReactions = m.awaitReactions(filter, {max: 1, time: 120000})
+      aMessages = channel.awaitMessages(msgFilter, {max: 1, time: 120000})
+      responses = await Promise.race([aReactions, aMessages])
       if (responses.size > 0 && responses.first().content && responses.first().content.toLowerCase() === "cancel") return false;
     }
     if (responses.size === 0) return false;
-    else if (responses.first().content) return options[letters.indexOf(responses.first().content.toLowerCase())];
+    else if (responses.first().content) {
+      return options[letters.indexOf(responses.first().content.toLowerCase())]
+    }
     else return options[emojis.indexOf(responses.first().emoji.name)];
   }
 

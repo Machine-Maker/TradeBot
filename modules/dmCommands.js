@@ -20,7 +20,7 @@ module.exports = (bot) => {
       while (this.nextPrompt()) {
         const prompt = this.nextPrompt()
         if (prompt.responseType === "embed choice") {
-          const val = await bot.choose(msg.channel, msg.author, prompt.options)
+          const val = await bot.choose(msg.channel, msg.author, prompt.options, prompt.prompt)
           if (!val) return this.remove(msg, true);
           prompt.value = val
         }
@@ -66,32 +66,33 @@ module.exports = (bot) => {
   bot.NewItem = class NewItem extends DMCommand {
     constructor(_channel_id, _type) {
       let prompts = []
+      prompts.push(new Prompt("Choose an item category", "embed choice", Object.keys(bot.config.categories)))
       prompts.push(new Prompt("Enter an item name", "string"))
       prompts.push(new Prompt("Enter an image url", "image link"))
       prompts.push(new Prompt("Enter an item description", "string"))
-      prompts.push(new Prompt(`Choose an item category: ${Object.keys(bot.config.categories).join(", ")}`, "choice", Object.keys(bot.config.categories)))
+      // prompts.push(new Prompt(`Choose an item category: ${Object.keys(bot.config.categories).join(", ")}`, "choice", Object.keys(bot.config.categories)))
       super(_channel_id, prompts)
       this.type = _type
     }
 
     complete(msg) {
       const embed = new bot.Embed()
-        .setTitle(this.prompts[0].value)
-        .setDescription(`\`\`\`fix\n${this.prompts[2].value}\`\`\``)
-        .setThumbnail(this.prompts[1].value)
-        .addField("Category", this.prompts[3].value)
+        .setTitle(this.prompts[1].value)
+        .setDescription(`\`\`\`fix\n${this.prompts[3].value}\`\`\``)
+        .setThumbnail(this.prompts[2].value)
+        .addField("Category", this.prompts[0].value)
         .setColor("#004ac1")
       msg.channel.send(embed).then(() => {
         bot.confirmCmd(msg, 30000).then(res => {
-          if (!res) return;
-          bot[`${this.type}Items`][this.prompts[0].value] = {
-            image_url: this.prompts[1].value,
-            description: this.prompts[2].value,
-            category: this.prompts[3].value
+          if (!res) return this.remove(msg);
+          bot[`${this.type}Items`][this.prompts[1].value] = {
+            image_url: this.prompts[2].value,
+            description: this.prompts[3].value,
+            category: this.prompts[0].value
           }
           bot.updateFile(`${this.type}Items.json`, bot[`${this.type}Items`])
-          bot.msg(msg.channel, `Added ${this.prompts[0].value}!`, "green")
-          bot.logger.newItem("Added a new item", this.prompts[0].value)
+          bot.msg(msg.channel, `Added ${this.prompts[1].value}!`, "green")
+          bot.logger.newItem("Added a new item", this.prompts[1].value)
           this.remove(msg)
         }).catch(err => bot.logger.error(err))
       }).catch(err => bot.logger.error(err))
@@ -251,6 +252,7 @@ module.exports = (bot) => {
   bot.EditTrade = class EditTrade extends DMCommand {
     constructor(_channel_id, _trade) {
       let prompts = []
+      bot.objProps.Category.options = Object.keys(bot.config.categories)
       let props = Object.keys(bot.objProps).filter(o => bot.objProps[o].validFor.includes(_trade.tradeType))
       prompts.push(new Prompt(`Which property would you like to change? [${props.join(", ")}]`, "choice", props))
       prompts.push(new Prompt("What is the new value for the selected property?", "previous", bot.objProps, prompts[0]))

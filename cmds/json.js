@@ -2,7 +2,7 @@ exports.run = (bot, msg, args) => {
   if (args.length === 1 && msg.author.id === bot.settings.ownerID) {
     try {
       if (typeof eval(args[0]) === "object") {
-        msg.channel.send(JSON.stringify(eval(args[0]), null, 2), {code: "json"})
+        msg.channel.send(JSON.stringify(eval(args[0]), null, 2), {code: "json", split: true})
       }
     } catch (err) {
       bot.msg(msg.channel, "Invalid JSON object! (or its too big)", "red")

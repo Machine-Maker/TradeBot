@@ -11,6 +11,14 @@ module.exports = async (bot) => {
   bot.logger.log(onReady)
   bot.logger.log('-'.repeat(onReady.length))
 
+  bot.user.setPresence({
+    status: bot.config["debug-mode"] ? "dnd" : "online",
+    game: {
+      name: "for new trades! | !help",
+      type: "WATCHING"
+    }
+  })
+
   bot.tradeGuild = bot.guilds.get(bot.settings.guildID)
   if (bot.tradeGuild)
     bot.logger.log(`Loaded trade guild`)

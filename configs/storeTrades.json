@@ -2,7 +2,7 @@
   {
     "user_id": "338670732403933194",
     "item_name": "Glider",
-    "item_count": 2,
+    "item_count": "0",
     "item_cost": "4k fuel",
     "location": "Store",
     "message_id": "529483402982981664",
@@ -28,5 +28,31 @@
       "Fuel Efficiency": "70"
     },
     "tradeType": "ProceduralTrade"
+  },
+  {
+    "user_id": "338670732403933194",
+    "item_name": "Neck Scarf",
+    "item_count": 1,
+    "item_cost": "Just a test",
+    "location": "Store",
+    "message_id": "529768084488060928",
+    "expires": null,
+    "type": "store",
+    "imageOrText": "text",
+    "imageOrTextValue": "Its red and black",
+    "tradeType": "ClothingTrade"
+  },
+  {
+    "user_id": "338670732403933194",
+    "item_name": "Skyfarer's Bandana",
+    "item_count": 1,
+    "item_cost": "another test",
+    "location": "Store",
+    "message_id": "529768244261683221",
+    "expires": null,
+    "type": "store",
+    "imageOrText": "image",
+    "imageOrTextValue": "https://cdn.discordapp.com/attachments/529477981089955840/529768217581715473/H2_08.jpg",
+    "tradeType": "ClothingTrade"
   }
 ]
