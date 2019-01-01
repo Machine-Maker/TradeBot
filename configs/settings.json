@@ -1,28 +1,26 @@
 {
   "config": {
     "prefix": "!",
-    "staff-role": "525438421984870410",
-    "public-trade-channel": "525427055836266521",
+    "staff-role": "434098995179028480",
+    "public-trade-channel": "529476047553691700",
     "trade-expiration": 7,
     "categories": {
-      "Structural": "525206178146418689",
-      "Decoration": "525439925164834816",
-      "Personal": "525539322452246536",
-      "Cooking": "525865434365558784",
-      "Weapons": "528659220564934667",
-      "Engines": "528815498557784064",
-      "Cannons": "528815541754789891",
-      "Wings": "528815600995270656",
-      "Swivels": "528815682176155658",
-      "Dyes": "529067299400056843",
-      "Clothing-Head": "529455050003841024"
+      "Storage": "529476634554662952",
+      "Stuctural": "529476679039713280",
+      "Decoration": "529476707711713281",
+      "Gear": "529476740788256779",
+      "Engines": "529476767828934666",
+      "Wings": "529476792843501569",
+      "Cannons": "529476828864315392",
+      "Swivels": "529476890684031014",
+      "Miscellaneous": "529477845748285460"
     },
     "pub-trade-listing-expires": 14,
     "pub-trade-active-expires": 7,
     "store-trade-listing-expires": 0,
     "store-trade-active-expires": 0,
-    "logging-channel": "528295034043498526",
-    "debug-mode": false
+    "logging-channel": "529474548911964172",
+    "debug-mode": true
   },
   "type-checks": {
     "prefix": "string",
@@ -36,7 +34,7 @@
     "logging-channel": "channel",
     "debug-mode": "boolean"
   },
-  "token": "NDc5OTA0OTQzOTEwNjgyNjI0.DvuxMg.RrXqFJSE7SCM7oepnb6guNtNMH8",
+  "token": "NTI5NDcwMzI0NjE0NjI3MzYz.DwxVmA.TH0cM9yuGxvMnDBSJ4567IU7Kp4",
   "ownerID": "338670732403933194",
-  "guildID": "462856789336260608"
+  "guildID": "379343288127455232"
 }

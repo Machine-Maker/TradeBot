@@ -2,27 +2,27 @@
   "Glider": {
     "description": "A personal glider you can deploy by pressing Spacebar while in the air.",
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/5/5e/Item_glider.png",
-    "category": "Personal"
+    "category": "Gear"
   },
   "Head Torch": {
-    "description": "\"Head mounted light source that illuminates the area in front of you. Press T to turn on and off.\"",
+    "description": "Head mounted light source that illuminates the area in front of you. Press T to turn on and off.",
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/a/ab/Head_torch.png?version=e5ebdc9d61a4cbf52042316dc87389e0",
-    "category": "Personal"
+    "category": "Gear"
   },
   "Camp Fire": {
     "description": "Allows you to cook recipe schematics and helps light up the darkest caves.",
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/d/d1/Camp_Fire.png?version=01047f3148a7cd5141acfd3fdd019b64",
-    "category": "Cooking"
+    "category": "Miscellaneous"
   },
   "Cannon Shells": {
     "description": "Cannon shells for ship cannons. Can be placed inside the ammo boxes of cannons.",
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/a/a6/Cannon_ball_Shell.png?version=090d8d03781906867b8513abf2b5c308",
-    "category": "Personal"
+    "category": "Miscellaneous"
   },
   "Stove": {
     "description": "A stove for preparing food and drink on a ship.",
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/1/16/Stove.png?version=3a109cbb3e9fa0b91d4b3dd361580e43",
-    "category": "Cooking"
+    "category": "Miscellaneous"
   },
   "Lamp": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/3/37/Lamp.png?version=1e3379c29499a472d1589f17d28dd6ba",

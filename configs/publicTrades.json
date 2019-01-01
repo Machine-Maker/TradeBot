@@ -1,13 +1,2 @@
 [
-  {
-    "user_id": "525924657778393108",
-    "item_name": "Glider",
-    "item_count": 3,
-    "item_cost": "Test",
-    "location": "Store",
-    "message_id": "529437203005177866",
-    "expires": "2019-01-14T15:14:21-08:00",
-    "type": "public",
-    "tradeType": "BasicTrade"
-  }
 ]
