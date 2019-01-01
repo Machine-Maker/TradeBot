@@ -119,10 +119,16 @@ module.exports = (bot) => {
       this.createTradeObject()
       msg.channel.send(this.tradeObj.embed).then(() => {
         bot.confirmCmd(msg, 30000).then(res => {
-          if (!res) return;
+          if (!res) return this.remove(msg);
           this.add(msg, this.tradeObj)
-        }).catch(err => bot.logger.error(err))
-      }).catch(err => bot.logger.error(err))
+        }).catch(err => {
+          bot.logger.error(err)
+          this.remove(msg)
+        })
+      }).catch(err => {
+        bot.logger.error(err)
+        this.remove(msg)
+      })
     }
 
     async add(msg, trade) {
