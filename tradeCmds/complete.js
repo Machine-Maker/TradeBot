@@ -28,7 +28,8 @@ exports.run = async (bot, msg, args, trade, perm) => {
 
 exports.conf = {
   enabled: true,
-  permLevel: ["Trader", "Tradee"]
+  permLevel: ["Trader", "Tradee"],
+  adminOnly: false
 }
 
 exports.help = {

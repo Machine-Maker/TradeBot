@@ -2,12 +2,41 @@
   {
     "user_id": "338670732403933194",
     "item_name": "Lamp",
-    "item_cost": "2k fuel",
+    "item_count": "4",
+    "item_cost": "200 titanium",
     "location": "Store",
-    "message_id": "528491872042352650",
+    "message_id": "528833848214028317",
     "expires": null,
     "type": "store",
-    "item_count": "5",
     "tradeType": "BasicTrade"
+  },
+  {
+    "user_id": "338670732403933194",
+    "item_name": "Wing",
+    "item_count": 1,
+    "item_cost": "2k fuel",
+    "location": "Store",
+    "message_id": "528839209314811905",
+    "expires": null,
+    "type": "store",
+    "procedural_name": "Falcon blah",
+    "stats": {
+      "Resilience": "40",
+      "Power": "1",
+      "Pivot Speed": "300"
+    },
+    "tradeType": "ProceduralTrade"
+  },
+  {
+    "user_id": "338670732403933194",
+    "item_name": "Paint Drum",
+    "item_count": 0,
+    "item_cost": "500 fuel",
+    "location": "Store",
+    "message_id": "529429693871685663",
+    "expires": null,
+    "type": "store",
+    "color": "Marauder Red",
+    "tradeType": "ColorTrade"
   }
 ]

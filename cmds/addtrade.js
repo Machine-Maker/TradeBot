@@ -1,6 +1,4 @@
-const axios = require('axios')
-
-exports.run = async (bot, msg, args) => {
+exports.run = async (bot, msg) => {
   if (msg.channel.type !== "dm")
     return bot.msg(msg.channel, "You must dm the bot to use this command!")
 
@@ -8,11 +6,31 @@ exports.run = async (bot, msg, args) => {
     return bot.msg(msg.channel, "You must be in the trading discord!", "red")
   const member = bot.tradeGuild.members.get(msg.author.id)
 
-  let obj = bot.inUse.find(o => o.id === msg.channel.id)
-  if (bot.getPermLevel(member) === "All")
-    obj = new bot.NewBasicTrade(msg.channel.id, msg.author.id, false)
-  else
-    obj = new bot.NewBasicTrade(msg.channel.id, msg.author.id, true)
+  const options = ["Basic Schematic", "Engine", "Wing", "Cannon", "Swivel", "Clothing item (not schem)", "Dye (pigment, dye bottle, paint, etc)"]
+  let choice = await bot.choose(msg.channel, msg.author, options)
+
+  const isPublicTrade = bot.getPermLevel(member) === "All"
+  let obj = null
+
+  switch (choice) {
+    case "Engine":
+    case "Wing":
+    case "Cannon":
+    case "Swivel":
+      obj = new bot.NewProceduralTrade(msg.channel.id, msg.author.id, !isPublicTrade, choice.toLowerCase())
+      break
+    case "Clothing item (not schem)":
+      obj = new bot.NewClothingTrade(msg.channel.id, msg.author.id, !isPublicTrade)
+      break
+    case "Dye (pigment, dye bottle, paint, etc)":
+      obj = new bot.NewColorTrade(msg.channel.id, msg.author.id, !isPublicTrade)
+      break
+    case "Basic Schematic":
+      obj = new bot.NewBasicTrade(msg.channel.id, msg.author.id, !isPublicTrade)
+      break
+    default:
+      bot.msg(msg.channel, "Something went wrong! Aborted", "red")
+  }
 
   obj.start(msg)
 }

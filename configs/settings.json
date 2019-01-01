@@ -8,13 +8,21 @@
       "Structural": "525206178146418689",
       "Decoration": "525439925164834816",
       "Personal": "525539322452246536",
-      "Cooking": "525865434365558784"
+      "Cooking": "525865434365558784",
+      "Weapons": "528659220564934667",
+      "Engines": "528815498557784064",
+      "Cannons": "528815541754789891",
+      "Wings": "528815600995270656",
+      "Swivels": "528815682176155658",
+      "Dyes": "529067299400056843",
+      "Clothing-Head": "529455050003841024"
     },
     "pub-trade-listing-expires": 14,
     "pub-trade-active-expires": 7,
     "store-trade-listing-expires": 0,
     "store-trade-active-expires": 0,
-    "logging-channel": "528295034043498526"
+    "logging-channel": "528295034043498526",
+    "debug-mode": false
   },
   "type-checks": {
     "prefix": "string",
@@ -25,7 +33,8 @@
     "pub-trade-active-expires": "number",
     "store-trade-listing-expires": "number",
     "store-trade-active-expires": "number",
-    "logging-channel": "channel"
+    "logging-channel": "channel",
+    "debug-mode": "boolean"
   },
   "token": "NDc5OTA0OTQzOTEwNjgyNjI0.DvuxMg.RrXqFJSE7SCM7oepnb6guNtNMH8",
   "ownerID": "338670732403933194",

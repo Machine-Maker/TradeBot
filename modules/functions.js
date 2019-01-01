@@ -25,14 +25,43 @@ module.exports = (bot) => {
     return moment().utcOffset(offset).format("MM/DD/YY")
   }
 
-  bot.awaitReply = async (msg, question, limit = 60000, code = "") => {
+  bot.choose = async (channel, user, options) => {
+    let emojis = []
+    let letters = []
+    let choices = ""
+    options.forEach((o, i) => {
+      choices += `:regional_indicator_${String.fromCharCode(97+i)}: ${o}\n`
+      emojis.push(`${String.fromCharCode(55356)}${String.fromCharCode(56806 + i)}`)
+      letters.push(String.fromCharCode(97+i))
+    })
+    const embed = new bot.Embed()
+      .setTitle("React with or type your corresponding choice")
+      .setDescription(choices)
+    const m = await channel.send(embed)
+    const filter = (reaction, u) => u.id === user.id && emojis.includes(reaction.emoji.name)
+    const msgFilter = m => m.author.id === user.id && (letters.includes(m.content.toLowerCase()) || m.content.toLowerCase() === "cancel")
+    bot.asyncForEach(emojis, async e => {
+      await m.react(e)
+    })
+    let responses = null
+    while (!responses) {
+      responses = await Promise.race([m.awaitReactions(filter, {max: 1, time: 120000}), channel.awaitMessages(msgFilter, {max: 1, time: 120000})])
+      if (responses.size > 0 && responses.first().content && responses.first().content.toLowerCase() === "cancel") return false;
+    }
+    if (responses.size === 0) return false;
+    else if (responses.first().content) return options[letters.indexOf(responses.first().content.toLowerCase())];
+    else return options[emojis.indexOf(responses.first().emoji.name)];
+  }
+
+  bot.awaitReply = async (msg, question, limit = 60000, code = "", msgObject = false) => {
     const filter = m => m.author.id === msg.author.id;
     if (code) await msg.channel.send(question, {code: code})
     else await msg.channel.send(question)
     try {
       const collected = await msg.channel.awaitMessages(filter, { max: 1, time: limit, errors: ["time"]})
-      return collected.first().content
+      return msgObject ? collected.first() : collected.first().content
     } catch (err) {
+      console.log(err)
       return false
     }
   }
@@ -59,14 +88,15 @@ module.exports = (bot) => {
     })
   }
 
-  bot.typeCheck = async (value, type, choices = [], previous = "") => {
+  bot.typeCheck = async (value, type, options = [], previous = "") => {
     switch (type) {
       case "string":
         return true
-        break
       case "number":
         if (isNaN(value)) return false;
         return true
+      case "image":
+
         break
       case "image link":
         try {
@@ -76,15 +106,12 @@ module.exports = (bot) => {
         } catch (err) {
           return false
         }
-        break
       case "choice":
-        if (!choices.includes(value)) return false;
+        if (!options.includes(value)) return false;
         return true
-        break
       case "previous":
-        if (!await bot.typeCheck(value, choices[previous.value])) return false;
+        if (!await bot.typeCheck(value, options[previous.value].type, options[previous.value].options)) return false;
         return true
-        break
       default:
         bot.logger.error(`${type} is not a valid option!`)
         return false
@@ -93,7 +120,7 @@ module.exports = (bot) => {
 
   bot.getPermLevel = member => {
     if (!bot.tradeGuild.members.has(member.id))
-      return bot.msg(msg, "Invalid member!")
+      return bot.logger.error("Invalid member (permission check)!")
     if (member.id === bot.settings.ownerID)
       return "Owner"
     if (member.permissions.has("ADMINISTRATOR"))

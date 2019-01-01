@@ -4,10 +4,11 @@ exports.run = async (bot, msg, args) => {
   try {
     const evaled = eval(code)
     const clean = await bot.clean(bot, evaled);
-    await msg.channel.send(`${clean}`, {code: "js"})
+    await msg.channel.send(`${clean}`, {code: "js", split: true})
   } catch (err) {
-    msg.channel.send(`\`ERROR\` \`\`\`xl\n${await bot.clean(bot, err)}\n\`\`\``).catch(err => {
+    msg.channel.send(`\`ERROR\` \`\`\`xl\n${await bot.clean(bot, err)}\n\`\`\``, {split: true}).catch(err => {
       bot.logger.error("Cant send the error message")
+      bot.logger.error(err)
     })
   }
 }

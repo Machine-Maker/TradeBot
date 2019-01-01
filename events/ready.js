@@ -1,4 +1,3 @@
-const fs = require('fs')
 const moment = require('moment')
 
 const files = {
@@ -6,8 +5,6 @@ const files = {
   storeTrades: require("../configs/storeTrades.json"),
   activeTrades: require("../configs/activeTrades.json")
 }
-
-
 
 module.exports = async (bot) => {
   let onReady = `Logged in as ${bot.user.username}    ID: ${bot.user.id}`
@@ -20,10 +17,14 @@ module.exports = async (bot) => {
   else
     bot.logger.error("NO GUILD FOUND! Please configure the guild id or the bot will not work!")
 
-  bot.tradeCategory = bot.tradeGuild.channels.find(ch => ch.name === "Active Trades" && ch.type === "category")
-  if (!bot.tradeCategory)
-    bot.tradeCategory = await bot.tradeGuild.createChannel("Active Trades", "category")
-  bot.logger.log("Found/Created trade channel category")
+  bot.tradeCategory = {}
+  bot.tradeCategory.public = bot.tradeGuild.channels.find(ch => ch.name === "Public Active Trades" && ch.type === "category")
+  bot.tradeCategory.store = bot.tradeGuild.channels.find(ch => ch.name === "Store Active Trades" && ch.type === "category")
+  if (!bot.tradeCategory.store)
+    bot.tradeCategory.store = await bot.tradeGuild.createChannel("Store Active Trades", "category")
+  if (!bot.tradeCategory.public)
+    bot.tradeCategory.public = await bot.tradeGuild.createChannel("Public Active Trades", "category")
+  bot.logger.log("Found/Created trade channel categories")
 
   await bot.tradeGuild.fetchMembers()
   bot.logger.log(`Cached all members from trade guild`)

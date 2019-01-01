@@ -2,12 +2,12 @@
   {
     "user_id": "525924657778393108",
     "item_name": "Glider",
-    "item_cost": "400 titanium",
-    "location": "A4",
-    "message_id": "528492766120902659",
-    "expires": "2019-01-12T00:41:22-08:00",
+    "item_count": 3,
+    "item_cost": "Test",
+    "location": "Store",
+    "message_id": "529437203005177866",
+    "expires": "2019-01-14T15:14:21-08:00",
     "type": "public",
-    "item_count": "2",
     "tradeType": "BasicTrade"
   }
 ]

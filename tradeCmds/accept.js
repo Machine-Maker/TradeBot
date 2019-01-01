@@ -1,4 +1,4 @@
-exports.run = (bot, msg, args, trade, perm) => {
+exports.run = (bot, msg, args, trade) => {
   if (!trade.accepted) {
     trade.accepted = true
     bot.msg(msg.channel, "This trade has been accepted. It will NOT be deleted automatically.", "green")
@@ -9,7 +9,8 @@ exports.run = (bot, msg, args, trade, perm) => {
 
 exports.conf = {
   enabled: true,
-  permLevel: ["Trader"]
+  permLevel: ["Trader"],
+  adminOnly: false,
 }
 
 exports.help = {

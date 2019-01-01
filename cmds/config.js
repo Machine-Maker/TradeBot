@@ -1,6 +1,5 @@
 exports.run = (bot, msg, args) => {
   let options = Object.keys(bot.config)
-  let changed = false;
   if (args.length === 0) {
     let config_msg = ""
     for (let i = 0; i < options.length; i++) {
@@ -18,13 +17,24 @@ exports.run = (bot, msg, args) => {
       case "string":
         bot.config[args[0]] = args[1]
         msg.channel.send(`${args[0]} was changed to "${args[1]}"`, {code: "bash"})
+        bot.updateFile('settings.json', bot.settings)
         break;
+      case "boolean":
+        if (args[1].toLowerCase() !== "true" && args[1].toLowerCase() !== "false")
+          return msg.channel.send(`"${args[1]}" is not a boolean!`, {code: "bash"})
+        else {
+          bot.config[args[0]] = JSON.parse(args[1])
+          msg.channel.send(`${args[0]} was changed to "${args[1]}"`, {code: "bash"})
+          bot.updateFile('settings.json', bot.settings)
+        }
+        break
       case "number":
         if (isNaN(args[1]))
           return msg.channel.send(`"${args[1]}" is not a number!`, {code: "bash"})
         else {
           bot.config[args[0]] = parseInt(args[1])
           msg.channel.send(`${args[0]} was changed to "${args[1]}"`, {code: "bash"})
+          bot.updateFile('settings.json', bot.settings)
         }
         break;
       case "channel":
@@ -34,6 +44,7 @@ exports.run = (bot, msg, args) => {
         else {
           bot.config[args[0]] = (msg.mentions.channels.firstKey()) || msg.client.channels.get(args[1]).id
           msg.channel.send(`${args[0]} was changed to "${args[1]}"`, {code: "bash"})
+          bot.updateFile('settings.json', bot.settings)
         }
         break;
       case "role":
@@ -43,6 +54,7 @@ exports.run = (bot, msg, args) => {
         else {
           bot.config[args[0]] = msg.mentions.roles.firstKey()
           msg.channel.send(`${args[0]} was changed to "${args[1]}"`, {code: "bash"})
+          bot.updateFile('settings.json', bot.settings)
         }
     }
   }
@@ -51,6 +63,7 @@ exports.run = (bot, msg, args) => {
       if (Object.keys(bot.config[args[0]]).includes(args[2])) {
         delete bot.config[args[0]][args[2]]
         msg.channel.send(`Deleted "${args[2]}"`, {bash: "bash"})
+        bot.updateFile('settings.json', bot.settings)
       }
       else {
         return msg.channel.send(`"${args[2]}" is not part of that config!`, {bash: "bash"})
@@ -64,6 +77,7 @@ exports.run = (bot, msg, args) => {
           bot.tradeGuild.createChannel(args[2]).then(channel => {
             bot.config[args[0]][args[2]] = channel.id
             msg.channel.send(`Added ${channel}!`)
+            bot.updateFile('settings.json', bot.settings)
           }).catch(err => {
             return console.error(err)
           })
@@ -74,6 +88,7 @@ exports.run = (bot, msg, args) => {
         if (!isNaN(args[3])) {
           bot.config[args[0]][args[2]] = args[3]
           msg.channel.send(`Added \`\`{${args[2]}: ${args[3]}}\`\``)
+          bot.updateFile('settings.json', bot.settings)
         }
         else {
           return msg.channel.send(`"${args[3]}" is not a number!`, {code: "bash"})
@@ -84,7 +99,6 @@ exports.run = (bot, msg, args) => {
       return msg.channel.send(`Use format \`\`${bot.config.prefix}settings ${args[0]} <add|del> <key> <value>\`\``)
     }
   }
-  bot.updateFile('settings.json', bot.settings)
 }
 
 exports.conf = {

@@ -48,7 +48,8 @@ module.exports = (bot) => {
         perm = "Trader"
       else if (this.tradee.id === member.id)
         perm = "Tradee"
-      if (!(cmd.conf.permLevel.includes(perm))) return;
+      if (cmd.conf.adminOnly && !member.permissions.has("ADMINISTRATOR", true)) return;
+      if (!(cmd.conf.permLevel.includes(perm)) && !cmd.conf.adminOnly) return;
       cmd.run(bot, msg, args, this, perm, member)
     }
 
@@ -63,18 +64,32 @@ module.exports = (bot) => {
       try { // create channel and apply settings
         this.channel = await bot.tradeGuild.createChannel(this.trade.item_name, "text", perms)
         this.channel_id = this.channel.id
-        await this.channel.setParent(bot.tradeCategory)
+        await this.channel.setParent(bot.tradeCategory[this.trade.type])
         const traderName = this.trade.type === "store" ? "Store" : this.trade.creator.nickname || this.trade.creator.user.username
         await this.channel.setTopic(`[${traderName}] trading with [${tradee.nickname || tradee.user.username}] Date initiated: ${bot.date(-8)}`)
         bot.activeTrades.push(this)
         const activeEmbed = new bot.Embed(Object.assign({}, this.trade.embed))
         activeEmbed.fields = activeEmbed.fields.filter(f => f.name !== "In stock")
-        // const expireData = moment().utcOffset(-8).add(bot.config["trade-expiration"], 'days')
-        const expireData = moment().utcOffset(-8).add(10, 'seconds')
-        this.expires = expireData.format()
-        activeEmbed.addField("Expires", expireData.format("MM/DD/YY"), true)
-          .setTimestamp()
+
+        if (this.trade.type === "store" && bot.config["store-trade-active-expires"] > 0) {
+          this.expireData = moment().utcOffset(-8).add(bot.config["store-trade-active-expires"], 'days')
+        }
+        else if (this.trade.type === "public" && bot.config["pub-trade-active-expires"] > 0) {
+          this.expireData = moment().utcOffset(-8).add(bot.config["pub-trade-active-expires"], 'days')
+        }
+        // this.expireData = moment().utcOffset(-8).add(10, 'seconds')
+
+        if (this.expireData) {
+          this.expires = this.expireData.format()
+          activeEmbed.addField("Expires", this.expireData.format("MM/DD/YY"), true)
+        }
+        else
+          this.expires = null
+
+        activeEmbed.setTimestamp()
           .addField("\u200b", "```yaml\nYou can negotiate a price/meetup location here. Type !help for a list of commands you have access to here```")
+
+        delete activeEmbed.footer
         bot.ActiveTrade.save()
 
         const trader = this.trade.type === "store" ? bot.tradeGuild.roles.get(bot.config["staff-role"]) : this.trade.creator
@@ -89,7 +104,15 @@ module.exports = (bot) => {
       }
     }
 
-    del() {
+    del(isCancel = false) {
+      if (isCancel) {
+        this.trade.changeStock(false)
+      }
+      if (this.trade.type === "public" && this.trade.item_count === 0) {
+        const otherActives = bot.activeTrades.filter(t => t.trade.message_id === this.trade.message_id && t.channel_id !== this.channel_id)
+        if (otherActives.length < 1) this.trade.message.delete();
+
+      }
       bot.activeTrades = bot.activeTrades.filter(t => t.channel_id !== this.channel_id)
       bot.ActiveTrade.save()
       bot.logger.delActive("Deleted an active trade", this)

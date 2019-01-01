@@ -1,5 +1,3 @@
-const axios = require("axios")
-
 module.exports = async (bot, msg) => {
   if (msg.author.bot) return;
   const args = msg.content.slice(bot.config.prefix.length).trim().split(/\s+/g)
@@ -18,6 +16,8 @@ module.exports = async (bot, msg) => {
 
     const cmd = bot.cmds.get(cmd_name) || bot.cmds.get(bot.aliases.get(cmd_name))
     if (!(cmd && cmd.conf.enabled) || (!msg.guild && cmd.conf.guildOnly)) return;
-    if (!cmd.conf.permLevel.includes(bot.getPermLevel(member))) return; // perm check
+    let perm = bot.getPermLevel(member)
+    if ((perm !== "Owner" && perm !== "Admin") && bot.config["debug-mode"]) perm = "None";
+    if (!cmd.conf.permLevel.includes(perm)) return; // perm check
     cmd.run(bot, msg, args)
 }

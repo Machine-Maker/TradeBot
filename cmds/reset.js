@@ -40,7 +40,7 @@ exports.run = async (bot, msg, args) => {
       case "store-trades":
         reset("storeTrades", [], "Removing all store trades!")
         break
-      case "active-trades":
+      case "active-trades": {
         const reply = await bot.awaitReply(msg, `Confirm the reset by typing \`\`yes\`\` in the next 10 seconds!`, 10000)
         if (!reply || reply.toLowerCase() !== "yes")
           return bot.msg(msg.channel, "Cancelled!", "red")
@@ -57,6 +57,7 @@ exports.run = async (bot, msg, args) => {
         bot.ActiveTrade.save()
         bot.msg(msg.channel, "Removing all active trades!", "yellow")
         break
+      }
       case "all":
         reset("items", {}, "Removing all configured items!")
         reset("storeTrades", [], "Removing all public trades!")

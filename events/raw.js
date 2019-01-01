@@ -16,17 +16,19 @@ module.exports = async (bot, event) => {
 
   switch (event.t) {
     case "MESSAGE_REACTION_ADD":
-    case "MESSAGE_REACTION_REMOVE":
+    case "MESSAGE_REACTION_REMOVE": {
       if (channel.messages.has(data.message_id)) return; // tests if message is already cached
       const message = await channel.fetchMessage(data.message_id)
       const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name
       const reaction = message.reactions.get(emojiKey)
       bot.emit(events[event.t], reaction, user)
       break
-    case "MESSAGE_DELETE":
+    }
+    case "MESSAGE_DELETE": {
       const trade = bot.storeTrades.concat(bot.publicTrades).filter(t => t.message_id === data.id)[0]
       if (!trade) return;
       trade.del()
       break
+    }
   }
 }

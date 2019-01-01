@@ -1,4 +1,4 @@
-exports.run = (bot, msg, args, trade, perm, member) => {
+exports.run = (bot, msg, args, trade, perm) => {
   const cmds = bot.tradeCmds.filter(cmd => cmd.conf.permLevel.includes(perm))
   if (!args[0]) {
     const cmdNames = cmds.keyArray()
@@ -21,7 +21,8 @@ exports.run = (bot, msg, args, trade, perm, member) => {
 
 exports.conf = {
   enabled: true,
-  permLevel: ["Trader", "Tradee"]
+  permLevel: ["Trader", "Tradee"],
+  adminOnly: false
 }
 
 exports.help = {

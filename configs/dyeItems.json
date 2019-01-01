@@ -1,0 +1,22 @@
+{
+  "Pigment": {
+    "image_url": "https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg",
+    "description": "No description",
+    "category": "Dyes"
+  },
+  "Dye": {
+    "image_url": "https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg",
+    "description": "No description",
+    "category": "Dyes"
+  },
+  "Paint Bucket": {
+    "image_url": "https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg",
+    "description": "No description",
+    "category": "Dyes"
+  },
+  "Paint Drum": {
+    "image_url": "https://vignette.wikia.nocookie.net/mixels/images/f/f4/No-image-found.jpg",
+    "description": "No description",
+    "category": "Dyes"
+  }
+}

@@ -4,8 +4,6 @@ const Enmap = require('enmap')
 
 const settings = require('./configs/settings.json')
 
-let items = require('./configs/items.json')
-
 const bot = new Discord.Client({disableEveryone: true})
 
 require('./modules/functions.js')(bot)
@@ -13,19 +11,24 @@ require('./modules/dmCommands.js')(bot)
 require('./modules/tradeTypes.js')(bot)
 require('./modules/activeTrades.js')(bot)
 require('./modules/logger.js')(bot)
-// bot.logger = require('./modules/logger.js')
 
 bot.settings = settings
 bot.config = settings.config
 bot.typeChecks = settings["type-checks"]
 
-bot.items = items
+bot.proceduralItems = require('./configs/proceduralItems.json')
+bot.clothingItems = require('./configs/clothingItems.json')
+bot.dyeItems = require('./configs/dyeItems.json')
+bot.otherItems = require('./configs/otherItems.json')
 
 bot.Embed = Discord.RichEmbed
 
+require('./modules/typeChecks.js')(bot)
+
 bot.tradeEmojis = {
   edit: "📝",
-  accept: "✅"
+  accept: "✅",
+  delete: "❌"
 }
 
 // ongoing dm commands

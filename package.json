@@ -1,6 +1,6 @@
 {
   "name": "tradebot",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A trading bot for the WA Trading discord",
   "main": "bot.js",
   "scripts": {
@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "babel": "^6.23.0",
     "chalk": "^2.4.1",
     "discord.js": "^11.4.2",
     "enmap": "^4.5.0",
@@ -18,7 +19,10 @@
   "nodemonConfig": {
     "ignore": [
       "settings.json",
-      "items.json",
+      "otherItems.json",
+      "proceduralItems.json",
+      "clothingItems.json",
+      "dyeItems.json",
       "storeTrades.json",
       "publicTrades.json",
       "activeTrades.json"
