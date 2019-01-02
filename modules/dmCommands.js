@@ -276,7 +276,7 @@ module.exports = (bot) => {
       bot.objProps.Category.options = Object.keys(bot.config[`${_type}-categories`])
       let props = Object.keys(bot.objProps).filter(o => bot.objProps[o].validFor.includes("Item"))
       prompts.push(new Prompt(`Which property would you like to change? [${props.join(", ")}]`, "embed choice", props))
-      prompts.push(new Prompt("What is the new value for the selected property?", "embed choice previous", bot.objProps, prompts[0]))
+      prompts.push(new Prompt("What is the new value for the selected property?", "previous", bot.objProps, prompts[0]))
       super(_channel_id, prompts)
       this.item_name = _name
       this.item = _item
