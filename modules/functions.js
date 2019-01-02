@@ -37,27 +37,27 @@ module.exports = (bot) => {
     const embed = new bot.Embed()
       .setTitle("React with or type your corresponding choice")
       .setDescription(choices)
-    let m = null
+    let msg = null
     if (prompt)
-      m = await channel.send(prompt, {embed: embed, code: "yaml"})
+      msg = await channel.send(prompt, {embed: embed, code: "yaml"})
     else
-      m = await channel.send(embed)
+      msg = await channel.send(embed)
     const filter = (reaction, u) => u.id === user.id && emojis.includes(reaction.emoji.name)
     const msgFilter = m => m.author.id === user.id && (letters.includes(m.content.toLowerCase()) || m.content.toLowerCase() === "cancel")
     let responses = null
     bot.asyncForEach(emojis, async e => {
       if (!responses)
-        await m.react(e)
+        await msg.react(e)
     })
     let aReactions = null
     let aMessages = null
     while (!responses) {
-      aReactions = m.awaitReactions(filter, {max: 1, time: 120000})
+      aReactions = msg.awaitReactions(filter, {max: 1, time: 120000})
       aMessages = channel.awaitMessages(msgFilter, {max: 1, time: 120000})
       responses = await Promise.race([aReactions, aMessages])
       if (responses.size > 0 && responses.first().content && responses.first().content.toLowerCase() === "cancel") return false;
     }
-    if (responses.size === 0) return false;
+    if (responses.size === 0) throw new Error("Ran out of time!");
     else if (responses.first().content) {
       return options[letters.indexOf(responses.first().content.toLowerCase())]
     }
@@ -98,6 +98,45 @@ module.exports = (bot) => {
       bot.logger.fileChange(file)
     })
   }
+
+  // bot.getResponse = async (msg, prompt, previous) => {
+  //   let value = null
+  //   if (prompt.responseType.search("embed") > -1) {
+  //     let choice = null
+  //     try {
+  //       choice = await bot.choose(msg.channel, msg.author, prompt.options, prompt.prompt)
+  //     } catch (err) {
+  //       bot.msg(msg.channel, "You did not reply in time!", "red")
+  //       return false;
+  //     }
+  //     if (!choice) throw new Error("Cancelled!");
+  //     value = choice
+  //   }
+  //   else {
+  //     const reply = bot.awaitReply(msg, prompt, 120000, "yaml", true)
+  //     if (!reply) throw new Error("Cancelled!");
+  //     switch(prompt.responseType) {
+  //       case "string":
+  //         value = reply.content
+  //         break
+  //       case "number":
+  //         if (isNaN(reply.content)) return false;
+  //         value = parseInt(reply.content)
+  //         break
+  //       case "image":
+  //         if (bot.getResponse())
+  //         break
+  //       case "image link":
+  //         try {
+  //           let res = await axios.get(reply.content)
+  //           if (res.headers["content-type"].search("image") < 0) throw new TypeError("Invalid URL");
+  //           value = reply.content
+  //         } catch (err) { return false; }
+
+  //     }
+  //   }
+  //   return value;
+  // }
 
   bot.typeCheck = async (value, type, options = [], previous = "") => {
     switch (type) {

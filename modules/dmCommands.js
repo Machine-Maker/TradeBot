@@ -19,7 +19,7 @@ module.exports = (bot) => {
     async start(msg) {
       while (this.nextPrompt()) {
         const prompt = this.nextPrompt()
-        if (prompt.responseType === "embed choice") {
+        if (prompt.responseType === "embed choice" || prompt.responseType === "embed choice previous") {
           const val = await bot.choose(msg.channel, msg.author, prompt.options, prompt.prompt)
           if (!val) return this.remove(msg, true);
           prompt.value = val
@@ -66,11 +66,10 @@ module.exports = (bot) => {
   bot.NewItem = class NewItem extends DMCommand {
     constructor(_channel_id, _type) {
       let prompts = []
-      prompts.push(new Prompt("Choose an item category", "embed choice", Object.keys(bot.config.categories)))
+      prompts.push(new Prompt("Choose an item category", "embed choice", Object.keys(bot.config[`${_type}-categories`])))
       prompts.push(new Prompt("Enter an item name", "string"))
       prompts.push(new Prompt("Enter an image url", "image link"))
       prompts.push(new Prompt("Enter an item description", "string"))
-      // prompts.push(new Prompt(`Choose an item category: ${Object.keys(bot.config.categories).join(", ")}`, "choice", Object.keys(bot.config.categories)))
       super(_channel_id, prompts)
       this.type = _type
     }
@@ -100,7 +99,7 @@ module.exports = (bot) => {
   }
 
   class NewTrade extends DMCommand {
-    constructor(_channel_id, _user_id, _isStoreTrade, _type, _prompts = [], firstPrompt = []) {
+    constructor(_channel_id, _user_id, _isStoreTrade, _item_type, _prompts = [], firstPrompt = []) {
       let prompts = firstPrompt
       prompts.push(new Prompt("Enter a location for the trade to take place. It can be anywhere, an island, a zone, whatever.", "string"))
       prompts.push(new Prompt("Enter a cost per item (except dye, then the cost is for the bunch of it)", "string"))
@@ -108,7 +107,7 @@ module.exports = (bot) => {
       super(_channel_id, prompts)
       this.isStoreTrade = _isStoreTrade
       this.userID = _user_id
-      this.type = _type
+      this.item_type = _item_type
       this.tradeType = this.constructor.name
     }
 
@@ -116,7 +115,8 @@ module.exports = (bot) => {
       this.trade = {
         user_id: this.userID,
         item_cost: this.prompts[2].value,
-        location: this.prompts[1].value
+        location: this.prompts[1].value,
+        item_type: this.item_type
       }
       this.createTradeObject()
       msg.channel.send(this.tradeObj.embed).then(() => {
@@ -162,7 +162,7 @@ module.exports = (bot) => {
       const firstPrompt = [new Prompt("Enter the item/schematic name", "choice", Object.keys(bot.otherItems))]
       let prompts = []
       prompts.push(new Prompt("How many of this item do you have in stock?", "number"))
-      super(_channel_id, _user_id, _isStoreTrade, "basic", prompts, firstPrompt)
+      super(_channel_id, _user_id, _isStoreTrade, "other", prompts, firstPrompt)
     }
 
     createTradeObject() {
@@ -214,7 +214,7 @@ module.exports = (bot) => {
       let prompts = []
       prompts.push(new Prompt("How many of this item are you putting up for trade?", "number"))
       prompts.push(new Prompt(`What is the color?\n${colors.join(", ")}`, "choice", colors))
-      super(_channel_id, _user_id, _isStoreTrade, "color", prompts, firstPrompt)
+      super(_channel_id, _user_id, _isStoreTrade, "dye", prompts, firstPrompt)
     }
 
     createTradeObject() {
@@ -250,9 +250,9 @@ module.exports = (bot) => {
   }
 
   bot.EditTrade = class EditTrade extends DMCommand {
-    constructor(_channel_id, _trade) {
+    constructor(_channel_id, _trade, _itemType) {
       let prompts = []
-      bot.objProps.Category.options = Object.keys(bot.config.categories)
+      bot.objProps.Category.options = Object.keys(bot.config[`${_itemType}-categories`])
       let props = Object.keys(bot.objProps).filter(o => bot.objProps[o].validFor.includes(_trade.tradeType))
       prompts.push(new Prompt(`Which property would you like to change? [${props.join(", ")}]`, "choice", props))
       prompts.push(new Prompt("What is the new value for the selected property?", "previous", bot.objProps, prompts[0]))
@@ -273,16 +273,16 @@ module.exports = (bot) => {
   bot.EditItem = class EditItem extends DMCommand {
     constructor(_channel_id, _name, _item, _type) {
       let prompts = []
+      bot.objProps.Category.options = Object.keys(bot.config[`${_type}-categories`])
       let props = Object.keys(bot.objProps).filter(o => bot.objProps[o].validFor.includes("Item"))
-      prompts.push(new Prompt(`Which property would you like to change? [${props.join(", ")}]`, "choice", props))
-      prompts.push(new Prompt("What is the new value for the selected property?", "previous", bot.objProps, prompts[0]))
+      prompts.push(new Prompt(`Which property would you like to change? [${props.join(", ")}]`, "embed choice", props))
+      prompts.push(new Prompt("What is the new value for the selected property?", "embed choice previous", bot.objProps, prompts[0]))
       super(_channel_id, prompts)
       this.item_name = _name
       this.item = _item
       this.type = _type
     }
 
-    // TODO: Needs updating
     complete(msg) {
       this.item[bot.objProps[this.prompts[0].value].name] = this.prompts[1].value
       bot.updateFile(`${this.type}Items.json`, bot[`${this.type}Items`])

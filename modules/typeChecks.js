@@ -28,7 +28,7 @@ module.exports = (bot) => {
     Category: {
       name: "category",
       type: "choice",
-      options: Object.keys(bot.config.categories),
+      options: null,
       validFor: ["Item"]
     }
   }

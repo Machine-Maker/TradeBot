@@ -3,21 +3,28 @@
     "prefix": "!",
     "staff-role": "434098995179028480",
     "public-trade-channel": "529476047553691700",
-    "categories": {
+    "other-categories": {
       "Storage": "529476634554662952",
       "Stuctural": "529476679039713280",
       "Decoration": "529476707711713281",
       "Gear": "529476740788256779",
+      "Miscellaneous": "529477845748285460",
+      "Flight Instruments": "529734573295140895",
+      "Sky Core Parts": "529735235324215296"
+    },
+    "procedural-categories": {
       "Engines": "529476767828934666",
       "Wings": "529476792843501569",
       "Cannons": "529476828864315392",
-      "Swivels": "529476890684031014",
-      "Miscellaneous": "529477845748285460",
-      "Flight Instruments": "529734573295140895",
-      "Sky Core Parts": "529735235324215296",
+      "Swivels": "529476890684031014"
+    },
+    "clothing-categories": {
       "Head Clothing": "529765697908375593",
       "Torso Clothing": "529765738890657808",
       "Legs Clothing": "529765779424673802"
+    },
+    "dye-categories": {
+      "Dyes": "529845779389612032"
     },
     "pub-trade-listing-expires": 14,
     "pub-trade-active-expires": 7,
@@ -30,7 +37,10 @@
     "prefix": "string",
     "staff-role": "role",
     "public-trade-channel": "channel",
-    "categories": "object",
+    "other-categories": "object",
+    "procedural-categories": "object",
+    "clothing-categories": "object",
+    "dye-categories": "object",
     "pub-trade-listing-expires": "number",
     "pub-trade-active-expires": "number",
     "store-trade-listing-expires": "number",

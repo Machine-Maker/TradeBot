@@ -10,7 +10,7 @@ module.exports = (bot) => {
       this.item = bot.otherItems[this.item_name] || bot.proceduralItems[this.item_name] || bot.clothingItems[this.item_name] || bot.dyeItems[this.item_name]
       this.creator = bot.tradeGuild.members.get(this.user_id)
       if (_type === "store") {
-        this.channel = bot.tradeGuild.channels.get(bot.config.categories[this.item.category])
+        this.channel = bot.tradeGuild.channels.get(bot.config[`${this.item_type}-categories`][this.item.category])
         this.data = "storeTrades"
         if (bot.config["store-trade-listing-expires"] > 0 && !this.expires) {
           this.expireData = moment().utcOffset(-8).add(bot.config["store-trade-listing-expires"], 'days')
@@ -36,6 +36,7 @@ module.exports = (bot) => {
     baseObj() {
       return {
         user_id: this.creator.id,
+        item_type: this.item_type,
         item_name: this.item_name,
         item_count: this.item_count,
         item_cost: this.item_cost,

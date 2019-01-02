@@ -7,7 +7,12 @@ exports.run = async (bot, msg) => {
   const member = bot.tradeGuild.members.get(msg.author.id)
 
   const options = ["Basic Schematic", "Engine", "Wing", "Cannon", "Swivel", "Clothing item (not schem)", "Dye (pigment, dye bottle, paint, etc)"]
-  let choice = await bot.choose(msg.channel, msg.author, options)
+  let choice = null
+  try {
+    choice = await bot.choose(msg.channel, msg.author, options)
+  } catch (err) {
+    return bot.msg(msg.channel, "You did not reply in time!", "red")
+  }
 
   const isPublicTrade = bot.getPermLevel(member) === "All"
   let obj = null
