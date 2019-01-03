@@ -6,10 +6,6 @@ module.exports = (bot) => {
     constructor(_obj, type = "active") {
       Object.assign(this, _obj)
       this.type = type
-      this.complete = {
-        trader: false,
-        tradee: false
-      }
     }
 
     async init() {
@@ -54,6 +50,10 @@ module.exports = (bot) => {
 
     async start(tradee) {
       this.accepted = false
+      this.complete = {
+        trader: false,
+        tradee: false
+      }
       this.tradee = tradee
       const perms = [] // permission creation
       const ids = [bot.config["staff-role"], tradee.id, this.trade.creator.id]
