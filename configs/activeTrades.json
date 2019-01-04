@@ -69,7 +69,7 @@
     "trade_id": "530688265016049675",
     "tradee_id": "175055487790743553",
     "tradeType": "ActiveTrade",
-    "accepted": false,
+    "accepted": true,
     "expires": "2019-01-11T08:21:06-08:00",
     "complete": {
       "trader": false,
