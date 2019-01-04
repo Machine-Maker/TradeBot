@@ -50,10 +50,7 @@ module.exports = (bot) => {
 
     async start(tradee) {
       this.accepted = false
-      this.complete = {
-        trader: false,
-        tradee: false
-      }
+      this.complete = false
       this.tradee = tradee
       const perms = [] // permission creation
       const ids = [bot.config["staff-role"], tradee.id, this.trade.creator.id]
