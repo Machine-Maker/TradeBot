@@ -5,7 +5,7 @@
     "public-trade-channel": "529476047553691700",
     "other-categories": {
       "Storage": "529476634554662952",
-      "Stuctural": "529476679039713280",
+      "Structural": "529476679039713280",
       "Decoration": "529476707711713281",
       "Gear": "529476740788256779",
       "Miscellaneous": "529477845748285460",
@@ -31,7 +31,7 @@
     "store-trade-listing-expires": 0,
     "store-trade-active-expires": 0,
     "logging-channel": "529474548911964172",
-    "debug-mode": true
+    "debug-mode": false
   },
   "type-checks": {
     "prefix": "string",

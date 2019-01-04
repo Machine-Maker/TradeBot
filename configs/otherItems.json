@@ -4,7 +4,7 @@
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/5/5e/Item_glider.png",
     "category": "Gear"
   },
-  "Head Torch": {
+  "Headlamp": {
     "description": "Head mounted light source that illuminates the area in front of you. Press T to turn on and off.",
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/a/ab/Head_torch.png",
     "category": "Gear"
@@ -107,12 +107,12 @@
   "Bar Pipe": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/thumb/1/10/BarPipe.png/200px-BarPipe.png",
     "description": "A bar made of piping.",
-    "category": "Stuctural"
+    "category": "Structural"
   },
   "Bent Bar Pipe": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/thumb/3/34/BarPipeBent.png/200px-BarPipeBent.png",
     "description": "A bent bar made of piping.",
-    "category": "Stuctural"
+    "category": "Structural"
   },
   "Barrel": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/a/a1/Barrel.png",
@@ -152,7 +152,7 @@
   "Crows Nest": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/thumb/8/88/CrowsNest.png/200px-CrowsNest.png",
     "description": "A room with a view atop your ship, perfect for scouting.",
-    "category": "Stuctural"
+    "category": "Structural"
   },
   "Epheremus Drifter": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/thumb/1/1e/Inertia_pack.png/200px-Inertia_pack.png",
@@ -207,7 +207,7 @@
   "Horn": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/thumb/5/58/Horn.png/200px-Horn.png",
     "description": "A loud horn.",
-    "category": "Gear"
+    "category": "Decoration"
   },
   "Immobilator": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/thumb/5/5f/Stasis_pack.png/200px-Stasis_pack.png",
@@ -227,7 +227,7 @@
   "Medium Panel": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/thumb/f/ff/PanelMediumMetal.png/200px-PanelMediumMetal.png",
     "description": "A medium-sixed rectangular panel.",
-    "category": "Stuctural"
+    "category": "Structural"
   },
   "Atlas Lifter": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/7/75/Atlas_Lifter.png",
@@ -237,12 +237,12 @@
   "Large Panel": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/0/07/PanelLargeMetal.png",
     "description": "A larger panel that is more useful for bigger ship hulls.",
-    "category": "Stuctural"
+    "category": "Structural"
   },
   "Window": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/6/6a/PanelWindow.png",
     "description": "A window set into a small panel that can be attached to a ship's hull.",
-    "category": "Stuctural"
+    "category": "Structural"
   },
   "Power Generator": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/f/fe/GeneratorMetal.png",
@@ -252,12 +252,12 @@
   "Railing": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/8/86/RailStraightMetal.png",
     "description": "A straight section of a ship's railing.",
-    "category": "Stuctural"
+    "category": "Structural"
   },
   "Railing Corner": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/2/29/RailCornerMetal.png",
     "description": "A corner section of a ship's railing.",
-    "category": "Stuctural"
+    "category": "Structural"
   },
   "Rhegus Greaves": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/thumb/2/21/Atlas_boots.png/400px-Atlas_boots.png",
@@ -267,11 +267,16 @@
   "Stairs": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/d/dc/StairsMetal.png",
     "description": "A staircase to connect different decks of a ship.",
-    "category": "Stuctural"
+    "category": "Structural"
   },
   "Timed Explosive": {
     "image_url": "https://d1u5p3l4wpay3k.cloudfront.net/worldsadrift_gamepedia/c/c3/Timed_Explosive.png",
     "description": "A big flammable explosive thing with a timer set for 4 seconds, ideal for extracting more metal from metallic core rocks.",
+    "category": "Miscellaneous"
+  },
+  "Marauder Compass": {
+    "image_url": "https://drive.google.com/uc?id=1Zbzu0RcrRR-AzfU-fBAZlGVIfcHmkqbC",
+    "description": "Points you too some Marauder loot.",
     "category": "Miscellaneous"
   }
 }
