@@ -79,8 +79,8 @@ module.exports = (bot) => {
         .setDescription(`\`\`\`fix\n${this.item.description}\`\`\``)
         .addField("Location", this.location, true)
         .addField("Cost", this.item_cost, true)
-      if (this.expireData)
-        this.embed.setFooter(`Expires: ${this.expireData.format("MM/DD/YY")}`)
+      if (this.expires)
+        this.embed.setFooter(`Expires: ${moment(this.expires).format("MM/DD/YY")}`)
       if (this.addToEmbed)
         this.addToEmbed()
     }
