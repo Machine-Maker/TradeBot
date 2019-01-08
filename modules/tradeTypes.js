@@ -26,11 +26,11 @@ module.exports = (bot) => {
       // this.expireData = moment().utcOffset(-8).add(10, 'seconds')
 
       this.type = _type
-      this.buildEmbed()
       if (this.expireData) {
         this.expires = this.expireData.format()
       }
       else if (!this.expires) this.expires = null;
+      this.buildEmbed()
     }
 
     baseObj() {
