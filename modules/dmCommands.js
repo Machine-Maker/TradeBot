@@ -253,7 +253,7 @@ module.exports = (bot) => {
     constructor(_channel_id, _trade) {
       let prompts = []
       bot.objProps.Category.options = Object.keys(bot.config[`${_trade.item_type}-categories`])
-      let props = Object.keys(bot.objProps).filter(o => bot.objProps[o].validFor.includes(_trade.tradeType))
+      let props = Object.keys(bot.objProps).filter(o => bot.objProps[o].validFor.includes(_trade.constructor.name))
       prompts.push(new Prompt(`Which property would you like to change? [${props.join(", ")}]`, "choice", props))
       prompts.push(new Prompt("What is the new value for the selected property?", "previous", bot.objProps, prompts[0]))
       super(_channel_id, prompts)
