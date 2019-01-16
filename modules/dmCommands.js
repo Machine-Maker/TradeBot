@@ -101,7 +101,10 @@ module.exports = (bot) => {
   class NewTrade extends DMCommand {
     constructor(_channel_id, _user_id, _isStoreTrade, _item_type, _prompts = [], firstPrompt = []) {
       let prompts = firstPrompt
-      prompts.push(new Prompt("Enter a location for the trade to take place. It can be anywhere, an island, a zone, whatever.", "string"))
+      if (_isStoreTrade)
+        prompts.push(new Prompt("Enter a location for the trade to take place. It can be anywhere, an island, a zone, whatever.", "string"))
+      else
+        prompts.push(new Prompt("Enter a location for the trade to take place. Don't use Greenhouse because that is the store location! (Trades with greenhouse as their location will be deleted)", "string"))
       prompts.push(new Prompt("Enter a cost per item (except dye, then the cost is for the bunch of it)", "string"))
       prompts = prompts.concat(_prompts)
       super(_channel_id, prompts)
