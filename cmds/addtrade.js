@@ -15,6 +15,8 @@ exports.run = async (bot, msg) => {
   }
 
   const isPublicTrade = bot.getPermLevel(member) === "All"
+  if (isPublicTrade && !bot.config["public-trade-channel"])
+    return bot.msg(msg.channel, "No public trade channel configured at this time!", "red")
   let obj = null
 
   switch (choice) {
