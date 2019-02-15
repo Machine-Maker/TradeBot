@@ -10,13 +10,12 @@ exports.run = (bot, msg, args) => {
 exports.conf = {
   enabled: true,
   guildOnly: false,
-  aliases: [],
-  permLevel: ["All", "Staff", "Admin", "Owner"]
+  aliases: ["Owner"]
 }
 
 exports.help = {
-  name: "addtrade",
-  category: "DM Commands",
-  description: "Add a new trade",
-  usage: "addtrade"
+  name: "aquiretrades",
+  category: "System",
+  description: "Finds trades",
+  usage: "aquiretrades"
 }
