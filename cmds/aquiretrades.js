@@ -1,7 +1,11 @@
 exports.run = (bot, msg, args) => {
   const channel = msg.channel
   channel.fetchMessages({limit: 100}).then(messages => {
-    console.log(`Recieved ${messages.size} messages`)
+    messages.forEach(m => {
+      if (m.embeds.length > 0) {
+        console.log(m.embeds[0])
+      }
+    })
   }).catch(error => {
     console.error(error)
   })
