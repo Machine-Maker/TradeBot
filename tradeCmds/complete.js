@@ -24,6 +24,6 @@ exports.conf = {
 
 exports.help = {
   name: "complete",
-  description: "Both parties must run this command for this trade to be marked complete",
+  description: "Marks the trade as complete and the channel will be deleted shortly after",
   usage: "complete"
 }

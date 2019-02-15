@@ -23,7 +23,7 @@ module.exports = (bot) => {
     obj() {
       return {
         channel_id: this.channel.id,
-        trade_id: this.trade.message_id,
+        trade_id: this.trade ? this.trade.message_id : undefined,
         tradee_id: this.tradee.id,
         tradeType: this.constructor.name,
         accepted: this.accepted,
@@ -102,10 +102,10 @@ module.exports = (bot) => {
     }
 
     del(isCancel = false) {
-      if (isCancel) {
+      if (isCancel && this.trade) {
         this.trade.changeStock(false)
       }
-      if (this.trade.type === "public" && this.trade.item_count === 0) {
+      if (this.trade && (this.trade.type === "public" || this.trade.item_type === "procedural") && this.trade.item_count === 0) {
         const otherActives = bot.activeTrades.filter(t => t.trade.message_id === this.trade.message_id && t.channel_id !== this.channel_id)
         if (otherActives.length < 1) this.trade.message.delete();
 
