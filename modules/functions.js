@@ -171,13 +171,11 @@ module.exports = (bot) => {
   bot.getPermLevel = member => {
     if (!bot.tradeGuild.members.has(member.id))
       return bot.logger.error("Invalid member (permission check)!")
-    if (member.id === bot.settings.ownerID)
-      return "Owner"
-    if (member.permissions.has("ADMINISTRATOR"))
-      return "Admin"
-    else if (member.roles.has(bot.config["staff-role"]))
-      return "Staff"
-    else return "All";
+    let perms = ["All"]
+    if (member.id === bot.settings.ownerID) perms.push("Owner")
+    if (member.permissions.has("ADMINISTRATOR")) perms.push("Admin")
+    if (member.roles.has(bot.config["staff-role"])) perms.push("Staff")
+    return perms
   }
 
   bot.msg = (channel, content, color = "none", options = {}) => {

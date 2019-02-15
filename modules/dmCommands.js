@@ -101,7 +101,10 @@ module.exports = (bot) => {
   class NewTrade extends DMCommand {
     constructor(_channel_id, _user_id, _isStoreTrade, _item_type, _prompts = [], firstPrompt = []) {
       let prompts = firstPrompt
-      prompts.push(new Prompt("Enter a location for the trade to take place. It can be anywhere, an island, a zone, whatever. DO NOT USE THE GREENHOUSE ISLAND. IT WILL CAUSE BLIGHTS.", "string"))
+      if (_isStoreTrade)
+        prompts.push(new Prompt("Enter a location for the trade to take place. It can be anywhere, an island, a zone, whatever.", "string"))
+      else
+        prompts.push(new Prompt("Enter a location for the trade to take place. Don't use Greenhouse because that is the store location! (Trades with greenhouse as their location will be deleted)", "string"))
       prompts.push(new Prompt("Enter a cost per item (except dye, then the cost is for the bunch of it)", "string"))
       prompts = prompts.concat(_prompts)
       super(_channel_id, prompts)
@@ -253,7 +256,7 @@ module.exports = (bot) => {
     constructor(_channel_id, _trade) {
       let prompts = []
       bot.objProps.Category.options = Object.keys(bot.config[`${_trade.item_type}-categories`])
-      let props = Object.keys(bot.objProps).filter(o => bot.objProps[o].validFor.includes(_trade.tradeType))
+      let props = Object.keys(bot.objProps).filter(o => bot.objProps[o].validFor.includes(_trade.constructor.name))
       prompts.push(new Prompt(`Which property would you like to change? [${props.join(", ")}]`, "choice", props))
       prompts.push(new Prompt("What is the new value for the selected property?", "previous", bot.objProps, prompts[0]))
       super(_channel_id, prompts)
