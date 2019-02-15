@@ -1,6 +1,5 @@
 exports.run = (bot, msg, args) => {
   const member = bot.tradeGuild.members.get(msg.author.id)
-  // const cmds = bot.cmds.filter(cmd => cmd.conf.permLevel.includes(bot.getPermLevel(member)))
   const cmds = bot.cmds.filter(cmd => cmd.conf.permLevel.filter(v => -1 !== bot.getPermLevel(member).indexOf(v)).length !== 0)
   if (!args[0]) {
     const cmdNames = cmds.keyArray()

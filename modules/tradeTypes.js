@@ -127,7 +127,6 @@ module.exports = (bot) => {
   bot.ProceduralTrade = class ProceduralTrade extends bot.Trade {
     constructor(_obj, _type) {
       super(_obj, _type)
-      this.embed.setColor("#ff3300")
     }
 
     addToEmbed() {
@@ -141,6 +140,7 @@ module.exports = (bot) => {
       this.embed.addField("Stats", output.trim())
       this.embed.setTitle(this.procedural_name)
       this.embed.setThumbnail(this.item.image_url)
+      this.embed.setColor("#ff3300")
     }
 
     obj() {
@@ -156,13 +156,13 @@ module.exports = (bot) => {
   bot.ColorTrade = class ColorTrade extends bot.Trade {
     constructor(_obj, _type) {
       super(_obj, _type)
-      this.embed.setColor("#bf42f4")
     }
 
     addToEmbed() {
       this.embed.setThumbnail(this.item.image_url)
         .addField("Quantity", this.quantity, true)
         .addField("Color", this.color, true)
+        .setColor("#bf42f4")
     }
 
     obj() {
@@ -178,11 +178,11 @@ module.exports = (bot) => {
   bot.ClothingTrade = class ClothingTrade extends bot.Trade {
     constructor(_obj, _type) {
       super(_obj, _type)
-      this.embed.setColor("#ffffff")
     }
 
     addToEmbed() {
       this.embed.setThumbnail(this.item.image_url)
+      this.embed.setColor("#ffffff")
       if (this.imageOrText === "text")
         this.embed.addField("Color", this.imageOrTextValue, true)
       else if (this.imageOrText === "image")

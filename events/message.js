@@ -18,7 +18,6 @@ module.exports = async (bot, msg) => {
     if (!(cmd && cmd.conf.enabled) || (!msg.guild && cmd.conf.guildOnly)) return;
     let perms = bot.getPermLevel(member)
     if (bot.config["debug-mode"] && !(perms.includes("Owner") || perms.includes("Admin"))) perm = "None";
-    // if ((perm !== "Owner" && perm !== "Admin") && bot.config["debug-mode"]) perm = "None";
     if (cmd.conf.permLevel.filter(v => -1 !== perms.indexOf(v)).length === 0) return; // perm check
     cmd.run(bot, msg, args)
 }
