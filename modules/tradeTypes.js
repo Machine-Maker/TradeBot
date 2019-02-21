@@ -92,7 +92,8 @@ module.exports = (bot) => {
     }
 
     static save(type) {
-      let data = []
+      try {
+        let data = []
       bot[type].forEach(t => {
         data.push(t.obj())
       })
@@ -100,6 +101,10 @@ module.exports = (bot) => {
         if (err) return bot.logger.error(err);
         bot.logger.fileChange(`${type}.json`)
       })
+      }
+      catch(err) {
+        console.error(err)
+      }
     }
   }
 

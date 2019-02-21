@@ -116,7 +116,8 @@ module.exports = (bot) => {
     }
 
     static save() {
-      let data = []
+      try {
+        let data = []
       bot.activeTrades.forEach(t => {
         data.push(t.obj())
       })
@@ -124,6 +125,10 @@ module.exports = (bot) => {
         if (err) return bot.logger.error(err);
         bot.logger.fileChange("activeTrades.json")
       })
+      }
+      catch(err) {
+        console.error(err)
+      }
     }
   }
 }
