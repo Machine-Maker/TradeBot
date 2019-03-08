@@ -133,18 +133,24 @@ module.exports = (bot) => {
     constructor(_obj, _type) {
       super(_obj, _type)
     }
-    statBar(percent, length = 20){
-        let shade = '?';
-        let blank = '?';
-        let bar='';
-        let o=1;
+
+    statBar(percent, length = 20) {
+        let shade = '▰'
+        let blank = '▱'
+        let bar=''
+        let o=1
         while(o<=length)
         {
-            if(o++<=Math.floor(length * percent)){bar+=shade;}
-            else {bar+=blank;}
+            if ( o++ <= Math.floor(length * percent)) {
+              bar += shade
+            }
+            else {
+              bar+=blank
+            }
         }
-        return bar;
+        return bar
     }
+
     addToEmbed() {
       let output = `\`\`\`asciidoc\n`
       let statNames = Object.keys(this.stats)
