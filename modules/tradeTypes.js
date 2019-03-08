@@ -133,13 +133,25 @@ module.exports = (bot) => {
     constructor(_obj, _type) {
       super(_obj, _type)
     }
-
+    statBar(percent, length = 20){
+        let shade = '?';
+        let blank = '?';
+        let bar='';
+        let o=1;
+        while(o<=length)
+        {
+            if(o++<=Math.floor(length * percent)){bar+=shade;}
+            else {bar+=blank;}
+        }
+        return bar;
+    }
     addToEmbed() {
       let output = `\`\`\`asciidoc\n`
       let statNames = Object.keys(this.stats)
       let longest = statNames.reduce((long, str) => Math.max(long, str.length), 0)
       for (let i = 0; i < statNames.length; i++) {
-        output += `${statNames[i]}${" ".repeat(longest - statNames[i].length)} :: ${" ".repeat(3-String(this.stats[statNames[i]]).length)}${this.stats[statNames[i]]}\n`
+        let bar = this.statBar( parseInt( this.stats[statNames[i]] ) );
+        output += `${statNames[i]}${" ".repeat(longest - statNames[i].length)} ${bar} ${" ".repeat(3-String(this.stats[statNames[i]]).length)}${this.stats[statNames[i]]}\n`
       }
       output += "```"
       this.embed.addField("Stats", output.trim())
